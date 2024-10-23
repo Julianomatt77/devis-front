@@ -23,6 +23,9 @@ import {
     SidebarTriggerClose,
 } from "@/components/ui/sidebar"
 import {useIsMobile} from "@/hooks/use-mobile";
+import {Button} from "@/components/ui/button";
+import {usePathname, useRouter} from "next/navigation";
+import {useAuth} from "@/lib/auth/AuthContext";
 
 const itemsDynamics = [
     {
@@ -78,16 +81,32 @@ const itemsFixed = [
         url: "/contact",
         icon: FilePenLine,
     },
-    {
-        title: "Connexion",
-        url: "/login",
-        icon: CircleUserRound,
-    },
+    // {
+    //     title: "Connexion",
+    //     url: "/login",
+    //     icon: CircleUserRound,
+    // },
 ]
 
 export function AppSidebar() {
-
+    const { isAuthenticated, logout } = useAuth();
     const isMobile = useIsMobile()
+    const router = useRouter();
+    const matcher= ['/devis', '/clients', '/entreprises', '/adresses', '/elements', '/prestations', '/dashboard']
+    const pathname = usePathname()
+
+    function handleLogout() {
+        logout()
+
+        if (matcher.includes(pathname)) {
+            router.push('/');
+        }
+    }
+
+    // Filtrer les items dynamiques pour ne garder que l'accueil si non authentifié
+    const visibleItems = isAuthenticated
+        ? itemsDynamics
+        : itemsDynamics.filter(item => item.title === "Accueil");
 
     return (
         <Sidebar>
@@ -100,7 +119,7 @@ export function AppSidebar() {
                     <SidebarGroupLabel className={"text-2xl mt-9"}>Devis Generator</SidebarGroupLabel>
                     <SidebarGroupContent className={"mt-4 "}>
                         <SidebarMenu>
-                            {itemsDynamics.map((item) => (
+                            {visibleItems.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild className={"my-2"}>
                                         <a href={item.url}>
@@ -128,6 +147,21 @@ export function AppSidebar() {
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>
+
+                        {isAuthenticated ? (
+                            <Button variant="destructive" onClick={handleLogout}>
+                                <CircleUserRound />
+                                <span>{"Se déconnecter"}</span>
+                            </Button>
+                        ) : (
+                            <Button>
+                                <CircleUserRound />
+                                <a href={"/login"}>
+                                    <span>{"Se connecter"}</span>
+                                </a>
+                            </Button>
+                        )}
+
                     </SidebarGroupContent>
                 </SidebarGroup>
 

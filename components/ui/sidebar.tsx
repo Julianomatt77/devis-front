@@ -7,7 +7,7 @@ import {CircleX, Menu, PanelLeft} from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { SidebarButton } from "@/components/ui/sidebarbutton"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
@@ -261,15 +261,15 @@ const Sidebar = React.forwardRef<
 Sidebar.displayName = "Sidebar"
 
 const SidebarTrigger = React.forwardRef<
-  React.ElementRef<typeof Button>,
-  React.ComponentProps<typeof Button>
+  React.ElementRef<typeof SidebarButton>,
+  React.ComponentProps<typeof SidebarButton>
 >(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
     const isMobile = useIsMobile()
     const divSize = isMobile ? "size-12 ml-2 mt-2" : "size-7"
 
   return (
-    <Button
+    <SidebarButton
       ref={ref}
       data-sidebar="trigger"
       variant="ghost"
@@ -285,19 +285,19 @@ const SidebarTrigger = React.forwardRef<
         {isMobile && <Menu size={40}/>}
         {!isMobile && <PanelLeft size={16}/>}
       <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    </SidebarButton>
   )
 })
 SidebarTrigger.displayName = "SidebarTrigger"
 
 const SidebarTriggerClose = React.forwardRef<
-    React.ElementRef<typeof Button>,
-    React.ComponentProps<typeof Button>
+    React.ElementRef<typeof SidebarButton>,
+    React.ComponentProps<typeof SidebarButton>
     >(({ className, onClick, ...props }, ref) => {
     const { toggleSidebar } = useSidebar()
 
     return (
-        <Button
+        <SidebarButton
             ref={ref}
             data-sidebar="trigger"
             variant="ghost"
@@ -311,10 +311,10 @@ const SidebarTriggerClose = React.forwardRef<
         >
             <CircleX size={40} />
             <span className="sr-only">Toggle Sidebar</span>
-        </Button>
+        </SidebarButton>
     )
 })
-SidebarTrigger.displayName = "SidebarTriggerClose"
+SidebarTriggerClose.displayName = "SidebarTriggerClose"
 
 const SidebarRail = React.forwardRef<
   HTMLButtonElement,

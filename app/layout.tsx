@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import {AuthProvider} from "@/lib/auth/AuthContext";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -47,19 +48,16 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${roboto.variable} antialiased dark`}
       >
-          <SidebarProvider>
-              <AppSidebar />
+          <AuthProvider>
+              <SidebarProvider>
+                  <AppSidebar />
 
-              <div className={"w-full min-h-80"}>
-                  <SidebarTrigger />
-                  {children}
-              </div>
-
-              {/*<div>*/}
-              {/*    {children}*/}
-              {/*</div>*/}
-          </SidebarProvider>
-
+                  <div className={"w-full min-h-80"}>
+                      <SidebarTrigger />
+                      {children}
+                  </div>
+              </SidebarProvider>
+          </AuthProvider>
       </body>
     </html>
   );

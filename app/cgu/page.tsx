@@ -8,7 +8,7 @@ export default function CguPage() {
     return (
         <section className={"flex flex-col items-center justify-center px-6"}>
             <div className={"pb-8"}>
-                <h1 className={"text-4xl font-bold capitalize"}>Conditions générales d'utilisation</h1>
+                <h1 className={"text-4xl font-bold capitalize"}>Conditions générales d&apos;utilisation</h1>
                 <h2 className={"text-md mt-1"}>En vigueur au 23/10/2024</h2>
             </div>
             <div className={"pb-8"}>
@@ -26,33 +26,33 @@ export default function CguPage() {
                     Le site
                     <a href="https://devisgenerator.martin-julien-dev.fr/" target="_blank">
                         https://devisgenerator.martin-julien-dev.fr</a>
-                    permet à l'Utilisateur un accès gratuit aux services suivants : <br />
+                    permet à l&#39;Utilisateur un accès gratuit aux services suivants : <br />
                     Gestion des dépenses et entretien de ses motos<br />
                     Le site est accessible gratuitement en tout lieu à tout Utilisateur ayant
-                    un accès à Internet. Tous les frais supportés par l'Utilisateur pour
+                    un accès à Internet. Tous les frais supportés par l&#39;Utilisateur pour
                     accéder au service (matériel informatique, logiciels, connexion Internet,
                     etc.) sont à sa charge.
                 </p>
                 <p>
-                    L’Utilisateur non membre n'a pas accès aux services réservés. Pour cela,
+                    L’Utilisateur non membre n&#39;a pas accès aux services réservés. Pour cela,
                     il doit s’inscrire en remplissant le formulaire. En acceptant de
                     s’inscrire aux services réservés, l’Utilisateur membre s’engage à fournir
                     des informations sincères et exactes concernant son état civil et ses
                     coordonnées, notamment son adresse email.
                 </p>
                 <p>
-                    Pour accéder aux services, l’Utilisateur doit ensuite s'identifier à
-                    l'aide de son identifiant et de son mot de passe.<br />
+                    Pour accéder aux services, l’Utilisateur doit ensuite s&#39;identifier à
+                    l&#39;aide de son identifiant et de son mot de passe.<br />
                     Tout Utilisateur membre régulièrement inscrit pourra également solliciter
                     sa désinscription en se rendant à la page dédiée sur son espace personnel.
                     Celle-ci sera effective dans un délai raisonnable. Tout événement dû à un
                     cas de force majeure ayant pour conséquence un dysfonctionnement du site
                     ou serveur et sous réserve de toute interruption ou modification en cas de
-                    maintenance, n'engage pas la responsabilité de
+                    maintenance, n&#39;engage pas la responsabilité de
                     <a href="https://devisgenerator.martin-julien-dev.fr/" target="_blank"
                     >https://devisgenerator.martin-julien-dev.fr</a>. Dans ces cas, l’Utilisateur accepte ainsi ne pas tenir rigueur à
                     l’éditeur de toute interruption ou suspension de service, même sans
-                    préavis. L'Utilisateur a la possibilité de contacter le site par
+                    préavis. L&#39;Utilisateur a la possibilité de contacter le site par
                     messagerie électronique à l’adresse email de l’éditeur communiqué à
                     l’ARTICLE 1
                 </p>
@@ -69,12 +69,12 @@ export default function CguPage() {
                 <h2 className={"text-xl font-bold pb-4"}>ARTICLE 4 : Propriété intellectuelle</h2>
                 <p>
                     Les marques, logos, signes ainsi que tous les contenus du site (textes,
-                    images, son…) font l'objet d'une protection par le Code de la propriété
-                    intellectuelle et plus particulièrement par le droit d'auteur.
+                    images, son…) font l&#39;objet d&#39;une protection par le Code de la propriété
+                    intellectuelle et plus particulièrement par le droit d&#39;auteur.
                 </p>
                 <p>
-                    L'Utilisateur doit solliciter l'autorisation préalable du site pour toute
-                    reproduction, publication, copie des différents contenus. Il s'engage à
+                    L&#39;Utilisateur doit solliciter l&#39;autorisation préalable du site pour toute
+                    reproduction, publication, copie des différents contenus. Il s&#39;engage à
                     une utilisation des contenus du site dans un cadre strictement privé,
                     toute utilisation à des fins commerciales et publicitaires est strictement
                     interdite. Toute représentation totale ou partielle de ce site par quelque
@@ -97,14 +97,14 @@ export default function CguPage() {
                     présentées à titre indicatif et général sans valeur contractuelle. Malgré
                     des mises à jour régulières, le site
                     <a href="https://devisgenerator.martin-julien-dev.fr/" target="_blank"
-                    >hhttps://devisgenerator.martin-julien-dev.fr/</a>
+                    >https://devisgenerator.martin-julien-dev.fr/</a>
                     ne peut être tenu responsable de la modification des dispositions
                     administratives et juridiques survenant après la publication. De même, le
                     site ne peut être tenue responsable de l’utilisation et de
-                    l’interprétation de l’information contenue dans ce site. L'Utilisateur
-                    s'assure de garder son mot de passe secret. Toute divulgation du mot de
+                    l’interprétation de l’information contenue dans ce site. L&#39;Utilisateur
+                    s&#39;assure de garder son mot de passe secret. Toute divulgation du mot de
                     passe, quelle que soit sa forme, est interdite. Il assume les risques liés
-                    à l'utilisation de son identifiant et mot de passe. Le site décline toute
+                    à l&#39;utilisation de son identifiant et mot de passe. Le site décline toute
                     responsabilité. Le site
                     <a href="https://devisgenerator.martin-julien-dev.fr/" target="_blank"
                     >https://devisgenerator.martin-julien-dev.fr</a>
@@ -112,7 +112,7 @@ export default function CguPage() {
                     infecter l’ordinateur ou tout matériel informatique de l’Internaute, suite
                     à une utilisation, à l’accès, ou au téléchargement provenant de ce site.
                     La responsabilité du site ne peut être engagée en cas de force majeure ou
-                    du fait imprévisible et insurmontable d'un tiers.
+                    du fait imprévisible et insurmontable d&#39;un tiers.
                 </p>
             </div>
             <div className={"pb-8"}>
@@ -153,8 +153,8 @@ export default function CguPage() {
             <div className={"pb-8"}>
                 <h2 className={"text-xl font-bold pb-4"}>ARTICLE 8 : Droit applicable et juridiction compétente</h2>
                 <p>
-                    La législation française s'applique au présent contrat. En cas d'absence
-                    de résolution amiable d'un litige né entre les parties, les tribunaux
+                    La législation française s&#39;applique au présent contrat. En cas d&#39;absence
+                    de résolution amiable d&#39;un litige né entre les parties, les tribunaux
                     français seront seuls compétents pour en connaître. Pour toute question
                     relative à l’application des présentes CGU, vous pouvez joindre l’éditeur
                     aux coordonnées inscrites à l’ARTICLE 1.
