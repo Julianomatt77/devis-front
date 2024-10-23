@@ -3,7 +3,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
-import { PanelLeft } from "lucide-react"
+import {CircleX, Menu, PanelLeft} from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -265,6 +265,8 @@ const SidebarTrigger = React.forwardRef<
   React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
   const { toggleSidebar } = useSidebar()
+    const isMobile = useIsMobile()
+    const divSize = isMobile ? "size-12 ml-2 mt-2" : "size-7"
 
   return (
     <Button
@@ -272,20 +274,47 @@ const SidebarTrigger = React.forwardRef<
       data-sidebar="trigger"
       variant="ghost"
       size="icon"
-      className={cn("h-7 w-7", className)}
+      className={cn(divSize, className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
-
     >
-      <PanelLeft />
+        {/*{isMobile && <Menu size={40} className={"fixed top-8 left-4"}/>}*/}
+        {isMobile && <Menu size={40}/>}
+        {!isMobile && <PanelLeft size={16}/>}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )
 })
 SidebarTrigger.displayName = "SidebarTrigger"
+
+const SidebarTriggerClose = React.forwardRef<
+    React.ElementRef<typeof Button>,
+    React.ComponentProps<typeof Button>
+    >(({ className, onClick, ...props }, ref) => {
+    const { toggleSidebar } = useSidebar()
+
+    return (
+        <Button
+            ref={ref}
+            data-sidebar="trigger"
+            variant="ghost"
+            // size="icon"
+            className={cn("size-12", className)}
+            onClick={(event) => {
+                onClick?.(event)
+                toggleSidebar()
+            }}
+            {...props}
+        >
+            <CircleX size={40} />
+            <span className="sr-only">Toggle Sidebar</span>
+        </Button>
+    )
+})
+SidebarTrigger.displayName = "SidebarTriggerClose"
 
 const SidebarRail = React.forwardRef<
   HTMLButtonElement,
@@ -432,9 +461,9 @@ SidebarGroup.displayName = "SidebarGroup"
 
 const SidebarGroupLabel = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<"div"> & { asChild?: boolean }
+  React.ComponentProps<"h2"> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : "div"
+  const Comp = asChild ? Slot : "h2"
 
   return (
     <Comp
@@ -738,28 +767,29 @@ const SidebarMenuSubButton = React.forwardRef<
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
 
 export {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupAction,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInput,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuAction,
-  SidebarMenuBadge,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSkeleton,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
-  SidebarProvider,
-  SidebarRail,
-  SidebarSeparator,
-  SidebarTrigger,
-  useSidebar,
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupAction,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarInput,
+    SidebarInset,
+    SidebarMenu,
+    SidebarMenuAction,
+    SidebarMenuBadge,
+    SidebarMenuButton,
+    SidebarMenuItem,
+    SidebarMenuSkeleton,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
+    SidebarProvider,
+    SidebarRail,
+    SidebarSeparator,
+    SidebarTrigger,
+    SidebarTriggerClose,
+    useSidebar,
 }

@@ -47,13 +47,18 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${roboto.variable} antialiased dark`}
       >
-      <SidebarProvider>
-          <AppSidebar />
-          <div>
-              <SidebarTrigger />
-              {children}
-          </div>
-      </SidebarProvider>
+          <SidebarProvider>
+              <AppSidebar />
+
+              <div className={"w-full min-h-80"}>
+                  <SidebarTrigger />
+                  {children}
+              </div>
+
+              {/*<div>*/}
+              {/*    {children}*/}
+              {/*</div>*/}
+          </SidebarProvider>
 
       </body>
     </html>
