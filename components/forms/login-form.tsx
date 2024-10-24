@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {authenticate} from "@/lib/actions";
 import {useRouter} from "next/navigation";
 import {useAuth} from "@/lib/auth/AuthContext";
+import { useFormStatus } from "react-dom";
 
 export default function LoginForm() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);

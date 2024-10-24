@@ -1,20 +1,20 @@
 import {Metadata} from "next";
-import LoginForm from "@/components/forms/login-form";
+import RegisterForm from "@/components/forms/register-form";
 
 export const metadata: Metadata = {
-    title: 'Devis Generator/Login',
+    title: 'Devis Generator/Register',
 };
 
-export default function loginPage() {
+export default function registerPage() {
     return (
         <main className="flex items-center justify-center md:h-screen">
             <div className="relative mx-auto flex w-full max-w-[400px] flex-col space-y-2.5 p-4 md:-mt-32">
                 <div>
-                    <h1 className={"text-4xl font-bold capitalize"}>Se connecter</h1>
+                    <h1 className={"text-4xl font-bold capitalize"}>Créer un compte</h1>
                 </div>
-                <LoginForm />
+                <RegisterForm />
                 <div>
-                    <p>Pas encore de compte ? <a href="/register" title={"s'enregistrer"} className={"underline"}>Créer un compte</a></p>
+                    <p>Vous avez déjà un compte ? <a href="/login" title={"Se connecter"}>Se connecter</a></p>
                 </div>
             </div>
         </main>
