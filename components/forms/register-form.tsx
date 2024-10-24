@@ -30,10 +30,8 @@ export default function RegisterForm() {
                     router.push('/login');
                 }, 1000);
             } else {
-                console.log(result)
                 setErrorMessage(result.message);
             }
-
         } catch (error) {
             console.log(error)
             setErrorMessage("Une erreur est survenue. Veuillez réessayer. ");

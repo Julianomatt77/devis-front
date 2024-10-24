@@ -1,7 +1,6 @@
 'use server';
 
 import {getUserInfo, signIn} from "@/lib/auth/auth";
-import {json} from "stream/consumers";
 
 export async function authenticate(
     prevState: string | undefined,
@@ -56,8 +55,6 @@ export async function register(
         }
 
         if (response.ok) {
-            const data = await response.json();
-
             return {ok: true, message: "Compte créé avec succès !"};
         }
 
@@ -65,5 +62,53 @@ export async function register(
 
     } catch (error) {
         return {ok: false, message: `Erreur lors de l'authentification: ${error.error}`};
+    }
+}
+
+export async function create(body: any, url: string, token: string) {
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: body,
+        });
+
+        if (response.status !== 201) {
+            const res = await response.text();
+            const parsedRes = JSON.parse(res);
+            return {ok: false, message: parsedRes.message};
+        }
+
+        const data = await response.json();
+        return {ok: true, data: data};
+    } catch (error) {
+        return {ok: false, message: `Erreur lors de la requête: ${error.error}`};
+    }
+}
+
+export async function update(body: any, url: string, token: string) {
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: body,
+        });
+
+        if (response.status !== 200) {
+            const res = await response.text();
+            const parsedRes = JSON.parse(res);
+            return {ok: false, message: parsedRes.message};
+        }
+
+        const data = await response.json();
+        return {ok: true, data: data};
+    } catch (error) {
+        return {ok: false, message: `Erreur lors de la requête: ${error.error}`};
     }
 }

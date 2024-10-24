@@ -52,7 +52,7 @@ export default function RootLayout({
               <SidebarProvider>
                   <AppSidebar />
 
-                  <div className={"w-full min-h-80"}>
+                  <div className={"w-full min-h-80 px-4"}>
                       <SidebarTrigger />
                       {children}
                   </div>
