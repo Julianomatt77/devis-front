@@ -5,54 +5,56 @@ import {Button} from "@/components/ui/button";
 import ClientForm from "@/components/forms/client-form";
 import Modal from "@/components/ui/modal";
 import {getClients} from "@/lib/data/data-clients";
+import {getAdresses} from "@/lib/data/data-adresses";
+import AdresseForm from "@/components/forms/adresse-form";
 
 export default function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedClient, setSelectedClient] = useState(null);
+    const [selectedAdresse, setSelectedAdresse] = useState(null);
     const [data, setData] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
-            const result = await getClients();
+            const result = await getAdresses();
             if (result.ok) {
-                const fetchedClients = result.data;
-                setData(fetchedClients);
+                const fetchedAdresses = result.data;
+                setData(fetchedAdresses);
             }
         }
         fetchData();
     }, []);
 
     const refreshData = async () => {
-        const result = await getClients();
+        const result = await getAdresses();
         if (result.ok) {
-            const updatedClients = result.data;
-            setData(updatedClients);
+            const updatedAdresses = result.data;
+            setData(updatedAdresses);
         }
     };
 
     const openEditModal = (client) => {
-        setSelectedClient(client);
+        setSelectedAdresse(client);
         setIsModalOpen(true);
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
-        setSelectedClient(null);
+        setSelectedAdresse(null);
     };
 
     return (
         <main className="flex items-center justify-center p-4">
             <div className="relative flex w-full flex-col items-center space-y-2.5 p-4">
                 <div className={"mb-8"}>
-                    <h1 className={"text-4xl font-bold capitalize"}>Clients</h1>
+                    <h1 className={"text-4xl font-bold capitalize"}>Carnet d'adresses</h1>
                 </div>
                 <div>
-                    <Button onClick={() => openEditModal(null)}>Nouveau client</Button>
+                    <Button onClick={() => openEditModal(null)}>Nouvelle adresse</Button>
                 </div>
                 <CardWrapper
                     data={data}
                     onEditData={openEditModal}
-                    type="client"
+                    type="adresse"
                     isDashboard={false}
                     refreshData={refreshData}
                     // onDeleteClient={deleteClient}
@@ -60,10 +62,10 @@ export default function Page() {
 
                 {isModalOpen && (
                     <Modal onClose={closeModal}>
-                        <ClientForm
+                        <AdresseForm
                             onSubmit={closeModal}
-                            clientData={selectedClient}
-                            isEditMode={!!selectedClient}
+                            data={selectedAdresse}
+                            isEditMode={!!selectedAdresse}
                             refreshData={refreshData}
                         />
                     </Modal>

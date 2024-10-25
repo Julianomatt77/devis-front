@@ -1,31 +1,20 @@
 'use server';
 
 import {cookies} from "next/headers";
-import {create, deleteItem, update} from "@/lib/actions";
+import {create, deleteItem, recuperer, update} from "@/lib/actions";
 
 export async function getClients() {
     const url = process.env.API_URL + 'clients';
     const cookieStore = await cookies()
     const token = cookieStore.get('devis_token').value;
 
-    const response = await fetch(url,{
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-    });
+    const response = await recuperer(url, token);
 
-    if (response.status !== 200) {
-        const res = await response.text();
-        const parsedRes = JSON.parse(res);
-        throw new Error(parsedRes.message);
+    if (!response.ok) {
+        return {ok: false, message: response.message}
     }
 
-    if (response.ok) {
-        const data = await response.json();
-        return data;
-    }
+    return {ok: true, message: response.message, data: response.data};
 }
 
 export async function addClient(formData: FormData){

@@ -2,7 +2,8 @@ import {getClients} from "@/lib/data/data-clients";
 import CardWrapper from "@/components/cards";
 
 export default async function DashboardPage() {
-    const clients = await getClients();
+    const data = await getClients();
+    const clients = data.data;
 
     return (
         <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">

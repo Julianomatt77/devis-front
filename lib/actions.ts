@@ -102,8 +102,9 @@ export async function update(body: any, url: string, token: string) {
 
         if (response.status !== 200) {
             const res = await response.text();
-            const parsedRes = JSON.parse(res);
-            return {ok: false, message: parsedRes.message};
+            // const parsedRes = JSON.parse(res);
+            // return {ok: false, message: parsedRes.message};
+            return {ok: false, message: res};
         }
 
         const data = await response.json();
@@ -127,10 +128,38 @@ export async function deleteItem(url: string, token: string) {
             const res = await response.text();
             const parsedRes = JSON.parse(res);
             return {ok: false, message: parsedRes.error};
+            // return {ok: false, message: 'pas bon'};
         }
 
         return {ok: true, message: "Suppression effectuée avec succès !", status: response.status};
     } catch (error) {
         return {ok: false, message: `Erreur lors de la requête: ${error.error}`};
+    }
+}
+
+export async function recuperer(url: string, token: string) {
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status !== 200) {
+            const res = await response.text();
+            const parsedRes = JSON.parse(res);
+            return {ok: false, message: parsedRes.error};
+        }
+
+        if (response.ok) {
+            const data = await response.json();
+            return {ok: true, message: "Récupération effectuée avec succès !", status: response.status, data: data};
+        }
+
+        return {ok: true, message: "Erreur lors de la récupération", status: response.status};
+    } catch (error) {
+        return {ok: false, message: `Erreur lors de la requête GET: ${error.error}`};
     }
 }

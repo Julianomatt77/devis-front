@@ -2,9 +2,10 @@
 import {Button} from "@/components/ui/button";
 import {deleteClients} from "@/lib/data/data-clients";
 import {useState} from "react";
+import {deleteAdresses} from "@/lib/data/data-adresses";
 
 // export default function CardWrapper({ data, onEditClient, type, isDashboard, onDeleteClient }) {
-export default function CardWrapper({ data, onEditClient, type, isDashboard, refreshData }) {
+export default function CardWrapper({ data, onEditData, type, isDashboard, refreshData }) {
 
     if (isDashboard) {
         if (type === "dashboardClient") {
@@ -29,7 +30,17 @@ export default function CardWrapper({ data, onEditClient, type, isDashboard, ref
                     return <CardClient
                         data={item}
                         key={item.id}
-                        onEditClient={onEditClient}
+                        onEditData={onEditData}
+                        refreshData={refreshData}
+                        // onDeleteClient={onDeleteClient}
+                    />
+                }
+
+                if (type === "adresse") {
+                    return <CardAdresse
+                        data={item}
+                        key={item.id}
+                        onEditData={onEditData}
                         refreshData={refreshData}
                         // onDeleteClient={onDeleteClient}
                     />
@@ -40,25 +51,29 @@ export default function CardWrapper({ data, onEditClient, type, isDashboard, ref
     )
 }
 
+function stringAdresse(adresse){
+    const {complementaire, cp, numero,  pays, rue, ville} = adresse;
+    const adresseParts = [];
+
+    if (numero) adresseParts.push(numero + ',');
+    if (rue) adresseParts.push(rue + ',');
+    if (complementaire) adresseParts.push(complementaire + ',');
+    if (cp) adresseParts.push(cp + ',');
+    if (ville) adresseParts.push(ville + ',');
+    if (pays) adresseParts.push(pays);
+
+    return adresseParts.join(' ');
+}
+
 // export function CardClient({ data, onEditClient, onDeleteClient }) {
-export function CardClient({ data, onEditClient, refreshData }) {
+export function CardClient({ data, onEditData, refreshData }) {
     const {adresse, devis, email, id, nom, prenom, telephone} = data;
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     let displayAdresse = '';
 
     if (adresse){
-        const {complementaire, cp, numero,  pays, rue, ville} = adresse;
-        const adresseParts = [];
-
-        if (numero) adresseParts.push(numero + ',');
-        if (rue) adresseParts.push(rue + ',');
-        if (complementaire) adresseParts.push(complementaire + ',');
-        if (cp) adresseParts.push(cp + ',');
-        if (ville) adresseParts.push(ville + ',');
-        if (pays) adresseParts.push(pays);
-
-        displayAdresse = adresseParts.join(' ');
+        displayAdresse = stringAdresse(adresse)
     }
 
     const deleteClient = async (clientId) => {
@@ -89,7 +104,7 @@ export function CardClient({ data, onEditClient, refreshData }) {
                 <p className="card-subtitle">{email}</p>
                 <div className="card-actions justify-end">
                     {/*<Button>Voir</Button>*/}
-                    <Button onClick={() => onEditClient(data)}>Modifier</Button>
+                    <Button onClick={() => onEditData(data)}>Modifier</Button>
                     <Button onClick={() => deleteClient(data.id)} variant="destructive">Supprimer</Button>
                 </div>
                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
@@ -123,5 +138,49 @@ export function DashboardCardClient(props: {data: any}) {
                 </div>
             </div>
         </li>
+    )
+}
+
+export function CardAdresse({ data, onEditData, refreshData }) {
+    const {numero, rue, complementaire, cp, ville, pays} = data;
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    const displayAdresse = stringAdresse(data)
+
+
+    const deleteAdresse = async (id) => {
+        setErrorMessage(null); // Réinitialise les messages
+        setSuccessMessage(null);
+
+        try {
+            const result = await deleteAdresses(id);
+
+            if (result.ok) {
+                setSuccessMessage(result.message);
+                refreshData()
+            } else {
+                setErrorMessage(result.message);
+            }
+        } catch (e) {
+            console.log(e)
+            setErrorMessage("Une erreur est survenue. Veuillez réessayer. ");
+        }
+    }
+
+    return (
+        <div className="card bg-base-100 w-96 shadow-xl">
+            <div className="card-body">
+                <h2 className="card-title">{displayAdresse}</h2>
+
+                <div className="card-actions justify-end">
+                    {/*<Button>Voir</Button>*/}
+                    <Button onClick={() => onEditData(data)}>Modifier</Button>
+                    <Button onClick={() => deleteAdresse(data.id)} variant="destructive">Supprimer</Button>
+                </div>
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                {successMessage && <p className="text-green-500">{successMessage}</p>}
+            </div>
+        </div>
     )
 }

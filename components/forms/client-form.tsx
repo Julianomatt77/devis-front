@@ -65,6 +65,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode, refreshDa
 
     return (
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
+            <h2 className="text-lg font-bold">{isEditMode ? 'Modifier' : 'Ajouter'} un client</h2>
             <div>
                 <label className="mb-3 mt-5 block text-xs font-medium">Nom: <span className={"text-red-700"}>*</span></label>
                 <input
@@ -117,7 +118,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode, refreshDa
                 />
             </div>
             <div className="flex justify-end">
-                <Button type="submit">Ajouter</Button>
+                <Button type="submit">{isEditMode ? 'Modifier' : 'Ajouter'}</Button>
             </div>
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             {successMessage && <p className="text-green-500">{successMessage}</p>}
