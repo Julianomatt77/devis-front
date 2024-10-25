@@ -6,12 +6,17 @@ import ClientForm from "@/components/forms/client-form";
 import Modal from "@/components/ui/modal";
 
 export default function ClientsPage({data}: {data: any}) {
-    // État pour ouvrir/fermer le popup
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedClient, setSelectedClient] = useState(null);
 
-    // Fonction pour ouvrir/fermer la modal
-    const toggleModal = () => {
-        setIsModalOpen(!isModalOpen);
+    const openEditModal = (client) => {
+        setSelectedClient(client);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedClient(null);
     };
 
     return (
@@ -21,14 +26,17 @@ export default function ClientsPage({data}: {data: any}) {
                     <h1 className={"text-4xl font-bold capitalize"}>Clients</h1>
                 </div>
                 <div>
-                    <Button onClick={toggleModal}>Nouveau client</Button>
+                    <Button onClick={() => openEditModal(null)}>Nouveau client</Button>
                 </div>
-                <CardWrapper data={data} type="client" isDashboard={false} />
+                <CardWrapper data={data} onEditClient={openEditModal} type="client" isDashboard={false} />
 
-                 {/*Modal pour ajouter un client*/}
                 {isModalOpen && (
-                    <Modal onClose={toggleModal}>
-                        <ClientForm onSubmit={toggleModal} />
+                    <Modal onClose={closeModal}>
+                        <ClientForm
+                            onSubmit={closeModal}
+                            clientData={selectedClient}
+                            isEditMode={!!selectedClient}
+                        />
                     </Modal>
                 )}
             </div>

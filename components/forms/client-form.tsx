@@ -1,9 +1,9 @@
 'use client';
-import {addClient} from "@/lib/data";
-import {useState} from "react";
+import {addClient, editClient} from "@/lib/data";
+import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
 
-export default function ClientForm({onSubmit}) {
+export default function ClientForm({ onSubmit, clientData, isEditMode }) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [formData, setFormData] = useState({
@@ -14,7 +14,16 @@ export default function ClientForm({onSubmit}) {
         adresse: '',
     });
 
-    //TODO: gerer la modif de client existant
+    useEffect(() => {
+        if (clientData) {
+            setFormData({
+                ...clientData,
+                adresse: clientData.adresse?.id || '', // Utilisez l'ID de l'adresse si elle existe
+            });
+        }
+    }, [clientData]);
+
+    //TODO: gerer l'adresse
 
     // Gestion des changements dans les inputs
     const handleChange = (e) => {
@@ -33,11 +42,13 @@ export default function ClientForm({onSubmit}) {
 
         // Appelez l'API pour ajouter un client
         try {
-           const result = await addClient(formData);
+            const result = isEditMode
+                ? await editClient(formData)
+                : await addClient(formData);
 
             if (result.ok) {
                 setSuccessMessage(result.message);
-                console.log(result.data)
+                // console.log(result.data)
 
                 // Fermez la modal après la soumission
                 onSubmit();
@@ -53,7 +64,7 @@ export default function ClientForm({onSubmit}) {
     return (
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
             <div>
-                <label className="mb-3 mt-5 block text-xs font-medium">Nom:</label>
+                <label className="mb-3 mt-5 block text-xs font-medium">Nom: <span className={"text-red-700"}>*</span></label>
                 <input
                     type="text"
                     name="nom"
@@ -70,7 +81,6 @@ export default function ClientForm({onSubmit}) {
                     name="prenom"
                     value={formData.prenom}
                     onChange={handleChange}
-                    required
                     className="input input-bordered w-full"
                 />
             </div>
@@ -81,7 +91,6 @@ export default function ClientForm({onSubmit}) {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    required
                     className="input input-bordered w-full"
                 />
             </div>
@@ -92,7 +101,6 @@ export default function ClientForm({onSubmit}) {
                     name="telephone"
                     value={formData.telephone}
                     onChange={handleChange}
-                    required
                     className="input input-bordered w-full"
                 />
             </div>
@@ -103,7 +111,6 @@ export default function ClientForm({onSubmit}) {
                     name="adresse"
                     value={formData.adresse}
                     onChange={handleChange}
-                    required
                     className="input input-bordered w-full"
                 />
             </div>

@@ -92,7 +92,7 @@ export async function create(body: any, url: string, token: string) {
 export async function update(body: any, url: string, token: string) {
     try {
         const response = await fetch(url, {
-            method: "PUT",
+            method: "PATCH",
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`

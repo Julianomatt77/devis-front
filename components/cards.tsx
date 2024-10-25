@@ -1,8 +1,6 @@
 import {Button} from "@/components/ui/button";
 
-export default function CardWrapper(props: {data: any, type: string, isDashboard?: boolean}) {
-    const {data, type, isDashboard} = props;
-    // console.log(data)
+export default function CardWrapper({ data, onEditClient, type, isDashboard }) {
 
     if (isDashboard) {
         if (type === "dashboardClient") {
@@ -24,7 +22,7 @@ export default function CardWrapper(props: {data: any, type: string, isDashboard
         <div className={"flex flex-wrap justify-center gap-5"}>
             {data.map((item: any) => {
                 if (type === "client") {
-                    return <CardClient data={item} key={item.id} />
+                    return <CardClient data={item} key={item.id} onEditClient={onEditClient} />
                 }
             })}
 
@@ -32,8 +30,7 @@ export default function CardWrapper(props: {data: any, type: string, isDashboard
     )
 }
 
-export function CardClient(props: {data: any}) {
-    const {data} = props;
+export function CardClient({ data, onEditClient }) {
     const {adresse, devis, email, id, nom, prenom, telephone} = data;
     let displayAdresse = '';
 
@@ -60,7 +57,7 @@ export function CardClient(props: {data: any}) {
                 <p className="card-subtitle">{email}</p>
                 <div className="card-actions justify-end">
                     <Button>Voir</Button>
-                    <Button variant="secondary">Modifier</Button>
+                    <Button onClick={() => onEditClient(data)}>Modifier</Button>
                     <Button variant="destructive">Supprimer</Button>
                 </div>
             </div>
