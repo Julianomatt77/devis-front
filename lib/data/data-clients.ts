@@ -1,7 +1,7 @@
 'use server';
 
 import {cookies} from "next/headers";
-import {create} from "@/lib/actions";
+import {create, deleteItem, update} from "@/lib/actions";
 
 export async function getClients() {
     const url = process.env.API_URL + 'clients';
@@ -56,7 +56,7 @@ export async function addClient(formData: FormData){
 
 export async function editClient(formData: FormData){
     try {
-        const url = process.env.API_URL + 'clients';
+        const url = process.env.API_URL + 'clients/' + formData.id;
         const cookieStore = await cookies()
         const token = cookieStore.get('devis_token').value;
 
@@ -68,14 +68,32 @@ export async function editClient(formData: FormData){
             adresse: formData.adresse ? { id: formData.adresse } : undefined,
         })
 
-        const response = await edit(body, url, token);
+        const response = await update(body, url, token);
 
         if (!response.ok) {
-            return {ok: false, message: response};
+            return {ok: false, message: response.message};
         }
 
-        return {ok: true, message: "Client créé avec succès !", data: response.data};
+        return {ok: true, message: "Client mis à jour avec succès !", data: response.data};
     } catch (error) {
-        return {ok: false, message: `Erreur lors de la création du client: ${error}`};
+        return {ok: false, message: `Erreur lors de la modification du client: ${error}`};
+    }
+}
+
+export async function deleteClients(id: number) {
+    try {
+        const url = process.env.API_URL + 'clients/' + id;
+        const cookieStore = await cookies()
+        const token = cookieStore.get('devis_token').value;
+
+        const response = await deleteItem(url, token);
+
+        if (!response.ok) {
+            return {ok: false, message: response.message};
+        }
+
+        return {ok: true, message: "Client supprimé avec succès !", status: response.status};
+    } catch (error) {
+        return {ok: false, message: `Erreur lors de la suppression du client: ${error}`};
     }
 }

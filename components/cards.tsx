@@ -1,6 +1,10 @@
+'use client';
 import {Button} from "@/components/ui/button";
+import {deleteClients} from "@/lib/data/data-clients";
+import {useState} from "react";
 
-export default function CardWrapper({ data, onEditClient, type, isDashboard }) {
+// export default function CardWrapper({ data, onEditClient, type, isDashboard, onDeleteClient }) {
+export default function CardWrapper({ data, onEditClient, type, isDashboard, refreshData }) {
 
     if (isDashboard) {
         if (type === "dashboardClient") {
@@ -22,7 +26,13 @@ export default function CardWrapper({ data, onEditClient, type, isDashboard }) {
         <div className={"flex flex-wrap justify-center gap-5"}>
             {data.map((item: any) => {
                 if (type === "client") {
-                    return <CardClient data={item} key={item.id} onEditClient={onEditClient} />
+                    return <CardClient
+                        data={item}
+                        key={item.id}
+                        onEditClient={onEditClient}
+                        refreshData={refreshData}
+                        // onDeleteClient={onDeleteClient}
+                    />
                 }
             })}
 
@@ -30,8 +40,11 @@ export default function CardWrapper({ data, onEditClient, type, isDashboard }) {
     )
 }
 
-export function CardClient({ data, onEditClient }) {
+// export function CardClient({ data, onEditClient, onDeleteClient }) {
+export function CardClient({ data, onEditClient, refreshData }) {
     const {adresse, devis, email, id, nom, prenom, telephone} = data;
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     let displayAdresse = '';
 
     if (adresse){
@@ -48,6 +61,25 @@ export function CardClient({ data, onEditClient }) {
         displayAdresse = adresseParts.join(' ');
     }
 
+    const deleteClient = async (clientId) => {
+        setErrorMessage(null); // Réinitialise les messages
+        setSuccessMessage(null);
+
+        try {
+            const result = await deleteClients(clientId);
+
+            if (result.ok) {
+                setSuccessMessage(result.message);
+                refreshData()
+            } else {
+                setErrorMessage(result.message);
+            }
+        } catch (e) {
+            console.log(e)
+            setErrorMessage("Une erreur est survenue. Veuillez réessayer. ");
+        }
+    }
+
     return (
         <div className="card bg-base-100 w-96 shadow-xl">
             <div className="card-body">
@@ -56,10 +88,12 @@ export function CardClient({ data, onEditClient }) {
                 <p className="card-subtitle">{telephone}</p>
                 <p className="card-subtitle">{email}</p>
                 <div className="card-actions justify-end">
-                    <Button>Voir</Button>
+                    {/*<Button>Voir</Button>*/}
                     <Button onClick={() => onEditClient(data)}>Modifier</Button>
-                    <Button variant="destructive">Supprimer</Button>
+                    <Button onClick={() => deleteClient(data.id)} variant="destructive">Supprimer</Button>
                 </div>
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                {successMessage && <p className="text-green-500">{successMessage}</p>}
             </div>
         </div>
     )

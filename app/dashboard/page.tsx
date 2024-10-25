@@ -1,4 +1,4 @@
-import {getClients} from "@/lib/data";
+import {getClients} from "@/lib/data/data-clients";
 import CardWrapper from "@/components/cards";
 
 export default async function DashboardPage() {

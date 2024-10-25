@@ -19,6 +19,24 @@ export default function ClientsPage({data}: {data: any}) {
         setSelectedClient(null);
     };
 
+    // const deleteClient = async (clientId) => {
+    //     setErrorMessage(null); // Réinitialise les messages
+    //     setSuccessMessage(null);
+    //
+    //     try {
+    //         const result = await deleteClients(clientId);
+    //
+    //         if (result.ok) {
+    //             setSuccessMessage(result.message);
+    //         }
+    //
+    //         setErrorMessage(result.message);
+    //     } catch (e) {
+    //         console.log(e)
+    //         setErrorMessage("Une erreur est survenue. Veuillez réessayer. ");
+    //     }
+    // }
+
     return (
         <main className="flex items-center justify-center p-4">
             <div className="relative flex w-full flex-col items-center space-y-2.5 p-4">
@@ -28,7 +46,13 @@ export default function ClientsPage({data}: {data: any}) {
                 <div>
                     <Button onClick={() => openEditModal(null)}>Nouveau client</Button>
                 </div>
-                <CardWrapper data={data} onEditClient={openEditModal} type="client" isDashboard={false} />
+                <CardWrapper
+                    data={data}
+                    onEditClient={openEditModal}
+                    type="client"
+                    isDashboard={false}
+                    // onDeleteClient={deleteClient}
+                />
 
                 {isModalOpen && (
                     <Modal onClose={closeModal}>

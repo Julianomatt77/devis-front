@@ -1,12 +1,13 @@
 'use client';
-import {addClient, editClient} from "@/lib/data";
+import {addClient, editClient} from "@/lib/data/data-clients";
 import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
 
-export default function ClientForm({ onSubmit, clientData, isEditMode }) {
+export default function ClientForm({ onSubmit, clientData, isEditMode, refreshData }) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [formData, setFormData] = useState({
+        id: '',
         nom: '',
         prenom: '',
         email: '',
@@ -49,10 +50,11 @@ export default function ClientForm({ onSubmit, clientData, isEditMode }) {
             if (result.ok) {
                 setSuccessMessage(result.message);
                 // console.log(result.data)
-
+                refreshData();
                 // Fermez la modal après la soumission
                 onSubmit();
             } else {
+                // console.log(result);
                 setErrorMessage(result.message);
             }
         } catch (e) {
@@ -68,7 +70,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode }) {
                 <input
                     type="text"
                     name="nom"
-                    value={formData.nom}
+                    value={formData.nom || ''}
                     onChange={handleChange}
                     required
                     className="input input-bordered w-full"
@@ -79,7 +81,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode }) {
                 <input
                     type="text"
                     name="prenom"
-                    value={formData.prenom}
+                    value={formData.prenom || ''}
                     onChange={handleChange}
                     className="input input-bordered w-full"
                 />
@@ -89,7 +91,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode }) {
                 <input
                     type="email"
                     name="email"
-                    value={formData.email}
+                    value={formData.email || ''}
                     onChange={handleChange}
                     className="input input-bordered w-full"
                 />
@@ -99,7 +101,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode }) {
                 <input
                     type="tel"
                     name="telephone"
-                    value={formData.telephone}
+                    value={formData.telephone || ''}
                     onChange={handleChange}
                     className="input input-bordered w-full"
                 />
@@ -109,7 +111,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode }) {
                 <input
                     type="text"
                     name="adresse"
-                    value={formData.adresse}
+                    value={formData.adresse || ''}
                     onChange={handleChange}
                     className="input input-bordered w-full"
                 />

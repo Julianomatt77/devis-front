@@ -109,6 +109,28 @@ export async function update(body: any, url: string, token: string) {
         const data = await response.json();
         return {ok: true, data: data};
     } catch (error) {
+        return {ok: false, message: `Erreur lors de la requête: ${error}`};
+    }
+}
+
+export async function deleteItem(url: string, token: string) {
+    try {
+        const response = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (response.status !== 202) {
+            const res = await response.text();
+            const parsedRes = JSON.parse(res);
+            return {ok: false, message: parsedRes.error};
+        }
+
+        return {ok: true, message: "Suppression effectuée avec succès !", status: response.status};
+    } catch (error) {
         return {ok: false, message: `Erreur lors de la requête: ${error.error}`};
     }
 }
