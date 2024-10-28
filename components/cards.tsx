@@ -285,6 +285,7 @@ export function CardEntreprise({ data, onEditData, refreshData }) {
                 {telephone2 && <p className="card-subtitle">{telephone2}</p>}
                 {email && <p className="card-subtitle">{email}</p>}
                 <div className="card-actions justify-end">
+                    <Button variant="secondary">Voir les devis</Button>
                     <Button onClick={() => onEditData(data)}>Modifier</Button>
                     <Button onClick={() => deleteData(data.id)} variant="destructive">Supprimer</Button>
                 </div>
