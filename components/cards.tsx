@@ -3,6 +3,7 @@ import {Button} from "@/components/ui/button";
 import {deleteClients} from "@/lib/data/data-clients";
 import {useState} from "react";
 import {deleteAdresses} from "@/lib/data/data-adresses";
+import {deleteProduct} from "@/lib/data/data-products";
 
 // export default function CardWrapper({ data, onEditClient, type, isDashboard, onDeleteClient }) {
 export default function CardWrapper({ data, onEditData, type, isDashboard, refreshData }) {
@@ -42,7 +43,15 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
                         key={item.id}
                         onEditData={onEditData}
                         refreshData={refreshData}
-                        // onDeleteClient={onDeleteClient}
+                    />
+                }
+
+                if (type === "product") {
+                    return <CardProduct
+                        data={item}
+                        key={item.id}
+                        onEditData={onEditData}
+                        refreshData={refreshData}
                     />
                 }
             })}
@@ -177,6 +186,45 @@ export function CardAdresse({ data, onEditData, refreshData }) {
                     {/*<Button>Voir</Button>*/}
                     <Button onClick={() => onEditData(data)}>Modifier</Button>
                     <Button onClick={() => deleteAdresse(data.id)} variant="destructive">Supprimer</Button>
+                </div>
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                {successMessage && <p className="text-green-500">{successMessage}</p>}
+            </div>
+        </div>
+    )
+}
+
+export function CardProduct({ data, onEditData, refreshData }) {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    const deleteData = async (id) => {
+        setErrorMessage(null); // Réinitialise les messages
+        setSuccessMessage(null);
+
+        try {
+            const result = await deleteProduct(id);
+
+            if (result.ok) {
+                setSuccessMessage(result.message);
+                refreshData()
+            } else {
+                setErrorMessage(result.message);
+            }
+        } catch (e) {
+            console.log(e)
+            setErrorMessage("Une erreur est survenue. Veuillez réessayer. ");
+        }
+    }
+
+    return (
+        <div className="card bg-base-100 w-96 shadow-xl">
+            <div className="card-body">
+                <h2 className="card-title">{data.nom}</h2>
+
+                <div className="card-actions justify-end">
+                    <Button onClick={() => onEditData(data)}>Modifier</Button>
+                    <Button onClick={() => deleteData(data.id)} variant="destructive">Supprimer</Button>
                 </div>
                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                 {successMessage && <p className="text-green-500">{successMessage}</p>}

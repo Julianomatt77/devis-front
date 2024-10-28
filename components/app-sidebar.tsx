@@ -7,7 +7,7 @@ import {
     FilePenLine,
     Home,
     ReceiptEuro,
-    Scale, Scroll, UserCog,
+    Scale, Scroll, ShoppingBasket, UserCog,
     UsersRound
 } from "lucide-react"
 
@@ -54,9 +54,9 @@ const itemsDynamics = [
         icon: Book,
     },
     {
-        title: "Elements",
-        url: "/elements",
-        icon: Atom,
+        title: "Produits",
+        url: "/produits",
+        icon: ShoppingBasket,
     },
     {
         title: "Prestations",
