@@ -51,7 +51,7 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
     )
 }
 
-function stringAdresse(adresse){
+export function stringAdresse(adresse){
     const {complementaire, cp, numero,  pays, rue, ville} = adresse;
     const adresseParts = [];
 

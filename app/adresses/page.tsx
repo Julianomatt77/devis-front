@@ -2,9 +2,7 @@
 import {useEffect, useState} from "react";
 import CardWrapper from "@/components/cards";
 import {Button} from "@/components/ui/button";
-import ClientForm from "@/components/forms/client-form";
 import Modal from "@/components/ui/modal";
-import {getClients} from "@/lib/data/data-clients";
 import {getAdresses} from "@/lib/data/data-adresses";
 import AdresseForm from "@/components/forms/adresse-form";
 

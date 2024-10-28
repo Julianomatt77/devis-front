@@ -12,7 +12,7 @@ export default function Modal({ children, onClose }) {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
             onClick={handleOutsideClick}
         >
-            <div className="relative w-full max-w-lg p-6 bg-accent rounded-lg shadow-lg">
+            <div className="relative w-full max-w-4xl p-6 bg-accent rounded-lg shadow-lg">
                 <button
                     onClick={onClose}
                     className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"

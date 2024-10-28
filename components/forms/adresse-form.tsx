@@ -6,6 +6,7 @@ import {addAdresse, editAdresse} from "@/lib/data/data-adresses";
 export default function AdresseForm({ onSubmit, data, isEditMode, refreshData }) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    // const [newAdresseId, setNewAdresseId] = useState<string | null>(null)
     const [formData, setFormData] = useState({
         numero: '',
         rue: '',
@@ -44,7 +45,7 @@ export default function AdresseForm({ onSubmit, data, isEditMode, refreshData })
             if (result.ok) {
                 setSuccessMessage(result.message);
                 refreshData();
-                onSubmit();
+                onSubmit(result.data.id);
             } else {
                 setErrorMessage(result.message);
             }
