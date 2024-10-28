@@ -5,6 +5,8 @@ import {useState} from "react";
 import {deleteAdresses} from "@/lib/data/data-adresses";
 import {deleteProduct} from "@/lib/data/data-products";
 import {deleteEntreprise} from "@/lib/data/data-entreprises";
+import {deleteDevis} from "@/lib/data/data-devis";
+import {formatDate, transformPriceToEuro} from "@/lib/utils";
 
 // export default function CardWrapper({ data, onEditClient, type, isDashboard, onDeleteClient }) {
 export default function CardWrapper({ data, onEditData, type, isDashboard, refreshData }) {
@@ -58,6 +60,24 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
 
                 if (type === "entreprise") {
                     return <CardEntreprise
+                        data={item}
+                        key={item.id}
+                        onEditData={onEditData}
+                        refreshData={refreshData}
+                    />
+                }
+
+                if (type === "devis") {
+                    return <CardDevis
+                        data={item}
+                        key={item.id}
+                        onEditData={onEditData}
+                        refreshData={refreshData}
+                    />
+                }
+
+                if (type === "prestation") {
+                    return <CardPrestation
                         data={item}
                         key={item.id}
                         onEditData={onEditData}
@@ -291,6 +311,90 @@ export function CardEntreprise({ data, onEditData, refreshData }) {
                 </div>
                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                 {successMessage && <p className="text-green-500">{successMessage}</p>}
+            </div>
+        </div>
+    )
+}
+
+export function CardDevis({ data, onEditData, refreshData }) {
+    const {reference, client, entreprise, prestations, deletedAt, createdAt, updatedAt, paidAt, dateDebutPrestation, dateValidite, totalHT, tva, totalTTC, tc} = data;
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+    let entrepriseAdresse = '';
+    if (entreprise && entreprise.adresse){
+        entrepriseAdresse = stringAdresse(entreprise.adresse)
+    }
+
+    let clientAdresse = '';
+    if (client && client.adresse){
+        clientAdresse = stringAdresse(client.adresse)
+    }
+
+    let createdAtDate = formatDate(createdAt);
+    let updatedAtDate = formatDate(updatedAt);
+    let deletedAtDate = formatDate(deletedAt);
+    let paidAtDate = formatDate(paidAt);
+    let debutAtDate = formatDate(dateDebutPrestation);
+    let validite = formatDate(dateValidite);
+
+    const prixHtCalcule = transformPriceToEuro(totalHT);
+    const tvaCalcule = transformPriceToEuro(tva);
+    const totalTTCCalcule = transformPriceToEuro(totalTTC);
+
+    const deleteData = async (id) => {
+        setErrorMessage(null); // Réinitialise les messages
+        setSuccessMessage(null);
+
+        try {
+            const result = await deleteDevis(id);
+
+            if (result.ok) {
+                setSuccessMessage(result.message);
+                refreshData()
+            } else {
+                setErrorMessage(result.message);
+            }
+        } catch (e) {
+            console.log(e)
+            setErrorMessage("Une erreur est survenue. Veuillez réessayer. ");
+        }
+    }
+
+    return (
+        <div className="card bg-base-100 w-96 shadow-xl">
+            <div className="card-body">
+                <h2 className="card-title">{reference}</h2>
+                <p>Créée le {createdAtDate}</p>
+                {updatedAt && <p>Mise à jour le {updatedAtDate}</p>}
+                {deletedAt && <p>Supprimée le {deletedAtDate}</p>}
+                <p>Client: {client.nom} {client.prenom}</p>
+                {clientAdresse && <p>{clientAdresse}</p>}
+                <p>Entreprise: {entreprise.nom}</p>
+                <p>siret: {entreprise.siret}</p>
+                {entrepriseAdresse && <p>{entrepriseAdresse}</p>}
+                <p>Prestations: {prestations.length}</p>
+                {dateDebutPrestation && <p>Date de début de prestation: {debutAtDate}</p>}
+                {dateValidite && <p>Date de validité: {validite}</p>}
+                {paidAt && <p>Date de paiement: {paidAtDate}</p>}
+                <p>Total HT: {prixHtCalcule}</p>
+                <p>TVA: {tvaCalcule}</p>
+                <p>Total TTC: {totalTTCCalcule}</p>
+                <div className="card-actions justify-end">
+                    <Button onClick={() => onEditData(data)}>Modifier</Button>
+                    <Button onClick={() => deleteData(data.id)} variant="destructive">Supprimer</Button>
+                </div>
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                {successMessage && <p className="text-green-500">{successMessage}</p>}
+            </div>
+        </div>
+    )
+}
+
+export function CardPrestation({ data, onEditData, refreshData }) {
+    return (
+        <div className="card bg-base-100 w-96 shadow-xl">
+            <div className="card-body">
             </div>
         </div>
     )
