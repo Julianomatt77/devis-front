@@ -8,7 +8,6 @@ import {deleteEntreprise} from "@/lib/data/data-entreprises";
 import {deleteDevis} from "@/lib/data/data-devis";
 import {formatDate, transformPriceToEuro} from "@/lib/utils";
 
-// export default function CardWrapper({ data, onEditClient, type, isDashboard, onDeleteClient }) {
 export default function CardWrapper({ data, onEditData, type, isDashboard, refreshData }) {
 
     if (isDashboard) {
@@ -331,12 +330,12 @@ export function CardDevis({ data, onEditData, refreshData }) {
         clientAdresse = stringAdresse(client.adresse)
     }
 
-    let createdAtDate = formatDate(createdAt);
-    let updatedAtDate = formatDate(updatedAt);
-    let deletedAtDate = formatDate(deletedAt);
-    let paidAtDate = formatDate(paidAt);
-    let debutAtDate = formatDate(dateDebutPrestation);
-    let validite = formatDate(dateValidite);
+    const createdAtDate = formatDate(createdAt);
+    const updatedAtDate = formatDate(updatedAt);
+    const deletedAtDate = formatDate(deletedAt);
+    const paidAtDate = formatDate(paidAt);
+    const debutAtDate = formatDate(dateDebutPrestation);
+    const validite = formatDate(dateValidite);
 
     const prixHtCalcule = transformPriceToEuro(totalHT);
     const tvaCalcule = transformPriceToEuro(tva);

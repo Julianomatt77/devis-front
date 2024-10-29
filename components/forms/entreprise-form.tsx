@@ -25,11 +25,11 @@ export default function EntrepriseForm({ onSubmit, entrepriseData, isEditMode, r
         adresse: '',
     });
 
-    let displayAdresse = '';
-    if (entrepriseData && entrepriseData.adresse) {
-        // Concatenation de la liste des champs de l'adresse
-        displayAdresse = stringAdresse(entrepriseData.adresse)
-    }
+    // let displayAdresse = '';
+    // if (entrepriseData && entrepriseData.adresse) {
+    //     // Concatenation de la liste des champs de l'adresse
+    //     displayAdresse = stringAdresse(entrepriseData.adresse)
+    // }
 
     // Récupérer la liste d'adresses
     const fetchAdresses = async () => {

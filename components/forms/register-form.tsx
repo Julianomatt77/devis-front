@@ -17,7 +17,7 @@ export default function RegisterForm() {
         setErrorMessage(null); // Réinitialise les messages
         setSuccessMessage(null);
 
-        const form = e.currentTarget;
+        // const form = e.currentTarget;
         const formData = new FormData(e.currentTarget);
 
         try {

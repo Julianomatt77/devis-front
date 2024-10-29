@@ -5,7 +5,6 @@ import {getDevis} from "@/lib/data/data-devis";
 import {Button} from "@/components/ui/button";
 import CardWrapper from "@/components/cards";
 import Modal from "@/components/ui/modal";
-import EntrepriseForm from "@/components/forms/entreprise-form";
 
 export default function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,6 +58,7 @@ export default function Page() {
                 />
 
                 {isModalOpen && (
+                    // TODO: Afficher une autre page plutôt avec mise en page comme pour single?
                     <Modal onClose={closeModal}>
                         <DevisForm
                             onSubmit={closeModal}

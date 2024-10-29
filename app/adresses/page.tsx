@@ -44,7 +44,7 @@ export default function Page() {
         <main className="flex items-center justify-center p-4">
             <div className="relative flex w-full flex-col items-center space-y-2.5 p-4">
                 <div className={"mb-8"}>
-                    <h1 className={"text-4xl font-bold capitalize"}>Carnet d'adresses</h1>
+                    <h1 className={"text-4xl font-bold capitalize"}>Carnet d&#39;adresses</h1>
                 </div>
                 <div>
                     <Button onClick={() => openEditModal(null)}>Nouvelle adresse</Button>

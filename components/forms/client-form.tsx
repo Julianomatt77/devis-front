@@ -20,11 +20,11 @@ export default function ClientForm({ onSubmit, clientData, isEditMode, refreshDa
         adresse: '',
     });
 
-    let displayAdresse = '';
-    if (clientData && clientData.adresse) {
-        // Concatenation de la liste des champs de l'adresse
-        displayAdresse = stringAdresse(clientData.adresse)
-    }
+    // let displayAdresse = '';
+    // if (clientData && clientData.adresse) {
+    //     // Concatenation de la liste des champs de l'adresse
+    //     displayAdresse = stringAdresse(clientData.adresse)
+    // }
 
     // Récupérer la liste d'adresses
     const fetchAdresses = async () => {

@@ -1,7 +1,6 @@
 'use client';
 import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
-import {addAdresse, editAdresse} from "@/lib/data/data-adresses";
 import {addProduct, editProduct} from "@/lib/data/data-products";
 
 export default function ProductForm({ onSubmit, data, isEditMode, refreshData }) {
