@@ -2,9 +2,9 @@
 import {addClient, editClient} from "@/lib/data/data-clients";
 import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
-import {stringAdresse} from "@/components/cards";
 import {getAdresses} from "@/lib/data/data-adresses";
 import AdresseForm from "@/components/forms/adresse-form";
+import {stringAdresse} from "@/lib/utils";
 
 export default function ClientForm({ onSubmit, clientData, isEditMode, refreshData }) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -38,11 +38,6 @@ export default function ClientForm({ onSubmit, clientData, isEditMode, refreshDa
 
     useEffect(() => {
         if (clientData) {
-
-            if (clientData.adresse){
-                displayAdresse = stringAdresse(clientData.adresse)
-            }
-
             setFormData({
                 ...clientData,
                 adresse: clientData.adresse?.id || '', // Utilisez l'ID de l'adresse si elle existe
@@ -102,7 +97,7 @@ export default function ClientForm({ onSubmit, clientData, isEditMode, refreshDa
                 setSuccessMessage(result.message);
                 refreshData();
                 // Fermez la modal après la soumission
-                onSubmit();
+                onSubmit(result.data.id);
             } else {
                 setErrorMessage(result.message);
             }

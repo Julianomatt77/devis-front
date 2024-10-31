@@ -88,3 +88,17 @@ export async function deleteDevis(id: number) {
         return {ok: false, message: `Erreur lors de la suppression du devis: ${error}`};
     }
 }
+
+export async function getOneDevis(id: number) {
+    const url = process.env.API_URL + 'devis/' + id;
+    const cookieStore = await cookies()
+    const token = cookieStore.get('devis_token').value;
+
+    const response = await recuperer(url, token);
+
+    if (!response.ok) {
+        return {ok: false, message: response.message}
+    }
+
+    return {ok: true, message: response.message, data: response.data};
+}

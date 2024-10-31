@@ -1,10 +1,10 @@
 'use client';
 import {useEffect, useState} from "react";
 import {Button} from "@/components/ui/button";
-import {stringAdresse} from "@/components/cards";
 import {getAdresses} from "@/lib/data/data-adresses";
 import AdresseForm from "@/components/forms/adresse-form";
 import {addEntreprise, editEntreprise} from "@/lib/data/data-entreprises";
+import {stringAdresse} from "@/lib/utils";
 
 export default function EntrepriseForm({ onSubmit, entrepriseData, isEditMode, refreshData }) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -25,12 +25,6 @@ export default function EntrepriseForm({ onSubmit, entrepriseData, isEditMode, r
         adresse: '',
     });
 
-    // let displayAdresse = '';
-    // if (entrepriseData && entrepriseData.adresse) {
-    //     // Concatenation de la liste des champs de l'adresse
-    //     displayAdresse = stringAdresse(entrepriseData.adresse)
-    // }
-
     // Récupérer la liste d'adresses
     const fetchAdresses = async () => {
         const adresses = await getAdresses();
@@ -43,10 +37,6 @@ export default function EntrepriseForm({ onSubmit, entrepriseData, isEditMode, r
 
     useEffect(() => {
         if (entrepriseData) {
-
-            if (entrepriseData.adresse){
-                displayAdresse = stringAdresse(entrepriseData.adresse)
-            }
 
             setFormData({
                 ...entrepriseData,

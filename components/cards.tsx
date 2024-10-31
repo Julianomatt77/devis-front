@@ -6,7 +6,8 @@ import {deleteAdresses} from "@/lib/data/data-adresses";
 import {deleteProduct} from "@/lib/data/data-products";
 import {deleteEntreprise} from "@/lib/data/data-entreprises";
 import {deleteDevis} from "@/lib/data/data-devis";
-import {formatDate, transformPriceToEuro} from "@/lib/utils";
+import {formatDate, stringAdresse, transformPriceToEuro} from "@/lib/utils";
+import {CircleCheckBig, CircleDashed} from "lucide-react";
 
 export default function CardWrapper({ data, onEditData, type, isDashboard, refreshData }) {
 
@@ -24,6 +25,25 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
                 </div>
             )
         }
+    }
+
+    if (type === "devis") {
+        return (
+            <div id={"card-devis-wrapper"} className={"flex flex-wrap justify-center gap-5 w-full"}>
+                {/*<div className="flow-root w-full">*/}
+                    <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-200 w-full">
+                        {data.map((item: any) => {
+                            return <CardDevis
+                                data={item}
+                                key={item.id}
+                                onEditData={onEditData}
+                                refreshData={refreshData}
+                            />
+                        })}
+                    </ul>
+                {/*</div>*/}
+            </div>
+        )
     }
 
     return (
@@ -66,15 +86,6 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
                     />
                 }
 
-                if (type === "devis") {
-                    return <CardDevis
-                        data={item}
-                        key={item.id}
-                        onEditData={onEditData}
-                        refreshData={refreshData}
-                    />
-                }
-
                 if (type === "prestation") {
                     return <CardPrestation
                         data={item}
@@ -87,20 +98,6 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
 
         </div>
     )
-}
-
-export function stringAdresse(adresse){
-    const {complementaire, cp, numero,  pays, rue, ville} = adresse;
-    const adresseParts = [];
-
-    if (numero) adresseParts.push(numero + ',');
-    if (rue) adresseParts.push(rue + ',');
-    if (complementaire) adresseParts.push(complementaire + ',');
-    if (cp) adresseParts.push(cp + ',');
-    if (ville) adresseParts.push(ville + ',');
-    if (pays) adresseParts.push(pays);
-
-    return adresseParts.join(' ');
 }
 
 export function CardClient({ data, onEditData, refreshData }) {
@@ -291,7 +288,7 @@ export function CardEntreprise({ data, onEditData, refreshData }) {
     }
 
     return (
-        <div className="card bg-base-100 w-96 shadow-xl">
+        <div className="card bg-base-100 w-full shadow-xl">
             <div className="card-body">
                 <h2 className="card-title">{nom}</h2>
                 <p>siret: {siret}</p>
@@ -316,30 +313,15 @@ export function CardEntreprise({ data, onEditData, refreshData }) {
 }
 
 export function CardDevis({ data, onEditData, refreshData }) {
-    const {reference, client, entreprise, prestations, deletedAt, createdAt, updatedAt, paidAt, dateDebutPrestation, dateValidite, totalHT, tva, totalTTC, tc} = data;
+    const {reference, client, createdAt, updatedAt, paidAt, totalTTC} = data;
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    let entrepriseAdresse = '';
-    if (entreprise && entreprise.adresse){
-        entrepriseAdresse = stringAdresse(entreprise.adresse)
-    }
-
-    let clientAdresse = '';
-    if (client && client.adresse){
-        clientAdresse = stringAdresse(client.adresse)
-    }
-
     const createdAtDate = formatDate(createdAt);
-    const updatedAtDate = formatDate(updatedAt);
-    const deletedAtDate = formatDate(deletedAt);
-    const paidAtDate = formatDate(paidAt);
-    const debutAtDate = formatDate(dateDebutPrestation);
-    const validite = formatDate(dateValidite);
-
-    const prixHtCalcule = transformPriceToEuro(totalHT);
-    const tvaCalcule = transformPriceToEuro(tva);
+    const updatedAtDate = updatedAt ? formatDate(updatedAt): null;
     const totalTTCCalcule = transformPriceToEuro(totalTTC);
+
+    const paid = paidAt ? "checked" : ""
 
     const deleteData = async (id) => {
         setErrorMessage(null); // Réinitialise les messages
@@ -361,32 +343,49 @@ export function CardDevis({ data, onEditData, refreshData }) {
     }
 
     return (
-        <div className="card bg-base-100 w-96 shadow-xl">
-            <div className="card-body">
-                <h2 className="card-title">{reference}</h2>
-                <p>Créée le {createdAtDate}</p>
-                {updatedAt && <p>Mise à jour le {updatedAtDate}</p>}
-                {deletedAt && <p>Supprimée le {deletedAtDate}</p>}
-                <p>Client: {client.nom} {client.prenom}</p>
-                {clientAdresse && <p>{clientAdresse}</p>}
-                <p>Entreprise: {entreprise.nom}</p>
-                <p>siret: {entreprise.siret}</p>
-                {entrepriseAdresse && <p>{entrepriseAdresse}</p>}
-                <p>Prestations: {prestations.length}</p>
-                {dateDebutPrestation && <p>Date de début de prestation: {debutAtDate}</p>}
-                {dateValidite && <p>Date de validité: {validite}</p>}
-                {paidAt && <p>Date de paiement: {paidAtDate}</p>}
-                <p>Total HT: {prixHtCalcule}</p>
-                <p>TVA: {tvaCalcule}</p>
-                <p>Total TTC: {totalTTCCalcule}</p>
-                <div className="card-actions justify-end">
-                    <Button onClick={() => onEditData(data)}>Modifier</Button>
-                    <Button onClick={() => deleteData(data.id)} variant="destructive">Supprimer</Button>
+        <li className="py-3 sm:py-4 w-full">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4 lg:mb-0">
+                <div className="flex min-w-0 gap-4">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <span className={"dark:text-gray-400"}>Référence: </span>{reference}
+                    </p>
                 </div>
-                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
-                {successMessage && <p className="text-green-500">{successMessage}</p>}
+                <div className="flex min-w-0 gap-4">
+                    <p className="text-sm text-gray-900 dark:text-white">
+                        <span className={"dark:text-gray-400"}>Client: </span>{client.nom} {client.prenom}
+                    </p>
+                </div>
+                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                    {totalTTCCalcule}
+                </div>
             </div>
-        </div>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="min-w-0 gap-4">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        <span className={"dark:text-gray-400"}>Créé le: </span>{createdAtDate}
+                    </p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {updatedAt && <span><span className={"dark:text-gray-400"}>Mis à jour le: </span>{updatedAtDate}</span>}
+                    </p>
+                </div>
+                <div className="flex flex-wrap items-center text-base font-semibold text-gray-900 dark:text-white">
+                    <div className="justify-center">
+                        <div className="form-control">
+                            <label className="cursor-pointer label">
+                                {!paid && <CircleDashed className=""/>}
+                                {paid && <CircleCheckBig className="text-green-500"/>}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className={"flex flex-wrap items-center justify-center gap-16"}>
+                <Button onClick={() => onEditData(data)}>Modifier</Button>
+                <Button onClick={() => deleteData(data.id)} variant="destructive">Supprimer</Button>
+                {successMessage && <p className="text-green-500">{successMessage}</p>}
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            </div>
+        </li>
     )
 }
 
