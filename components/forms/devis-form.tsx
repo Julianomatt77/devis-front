@@ -5,6 +5,7 @@ import {Button} from "@/components/ui/button";
 import {addDevis, editDevis} from "@/lib/data/data-devis";
 import {getEntreprises} from "@/lib/data/data-entreprises";
 import ClientForm from "@/components/forms/client-form";
+import {transformDateTimeToDate} from "@/lib/utils";
 
 export default function DevisForm({ onSubmit, devisData, isEditMode, refreshData }) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -46,7 +47,15 @@ export default function DevisForm({ onSubmit, devisData, isEditMode, refreshData
                 ...devisData,
                 entreprise: devisData.entreprise?.id || '',
                 client: devisData.client?.id || '',
+                dateValidite: devisData.dateValidite ? transformDateTimeToDate(devisData.dateValidite) : '',
             });
+
+            if (devisData.dateDebutPrestation) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    dateDebutPrestation: transformDateTimeToDate(devisData.dateDebutPrestation),
+                }));
+            }
         }
     }, [devisData]);
 
@@ -96,16 +105,18 @@ export default function DevisForm({ onSubmit, devisData, isEditMode, refreshData
         setSuccessMessage(null);
 
         try {
-            //TODO: supprimer le edit mode ?
             const result = isEditMode
                 ? await editDevis(formData)
                 : await addDevis(formData);
 
             if (result.ok) {
                 setSuccessMessage(result.message);
-                refreshData();
+                if (!isEditMode) {
+                    refreshData();//Refresh la liste des devis
+                    // TODO: aller sur la page du devis pour ajouter des prestations
+                    // Ou afficher une modale pour ajouter des prestations
+                }
                 onSubmit(result.data);
-                // TODO: aller sur la page du devis pour ajouter des prestations
             } else {
                 setErrorMessage(result.message);
             }

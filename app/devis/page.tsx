@@ -36,12 +36,16 @@ export default function Page() {
     };
 
     const openEditModal = (devis) => {
+        if (devis && devis.id) {
         setSelectedDevis(devis);
-        // setIsModalOpen(true);
         redirect(`/devis/${devis.id}`);
+        } else {
+            setIsModalOpen(true);
+        }
     };
 
     const closeModal = (devis) => {
+        console.log(devis)
         if (devis.id) {
             setSelectedDevis(devis);
             console.log(devis)
@@ -52,14 +56,18 @@ export default function Page() {
 
     return (
         <main className="w-full p-4 shadow sm:p-8">
-            <div className="flex items-center justify-center mb-4">
+            <div className="relative flex w-full flex-col items-center space-y-2.5 p-4">
                 <div className={"mb-8"}>
                     <h1 className={"text-4xl font-bold capitalize"}>Devis</h1>
                 </div>
+                <div>
+                    <Button onClick={() => openEditModal(null)}>Nouveau devis</Button>
+                </div>
             </div>
+
             <CardWrapper
                 data={data}
-                onEditData={openEditModal} //TODO :changer en voir le devis
+                onEditData={openEditModal}
                 type="devis"
                 isDashboard={false}
                 refreshData={refreshData}

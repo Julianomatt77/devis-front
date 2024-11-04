@@ -380,7 +380,7 @@ export function CardDevis({ data, onEditData, refreshData }) {
                 </div>
             </div>
             <div className={"flex flex-wrap items-center justify-center gap-16"}>
-                <Button onClick={() => onEditData(data)}>Modifier</Button>
+                <Button onClick={() => onEditData(data)}>Modifier / Voir</Button>
                 <Button onClick={() => deleteData(data.id)} variant="destructive">Supprimer</Button>
                 {successMessage && <p className="text-green-500">{successMessage}</p>}
                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
