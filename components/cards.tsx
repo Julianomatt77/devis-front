@@ -8,6 +8,8 @@ import {deleteEntreprise} from "@/lib/data/data-entreprises";
 import {deleteDevis} from "@/lib/data/data-devis";
 import {formatDate, stringAdresse, transformPriceToEuro} from "@/lib/utils";
 import {CircleCheckBig, CircleDashed} from "lucide-react";
+import Modal from "@/components/ui/modal";
+import WarningModal from "@/components/WarningModal";
 
 export default function CardWrapper({ data, onEditData, type, isDashboard, refreshData }) {
 
@@ -28,6 +30,7 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
     }
 
     if (type === "devis") {
+
         return (
             <div id={"card-devis-wrapper"} className={"flex flex-wrap justify-center gap-5 w-full"}>
                 {/*<div className="flow-root w-full">*/}
@@ -316,6 +319,10 @@ export function CardDevis({ data, onEditData, refreshData }) {
     const {reference, client, createdAt, updatedAt, paidAt, totalTTC} = data;
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isWarningOpen, setIsWarningOpen] = useState(false);
+
+    const openWarningModal = () => setIsWarningOpen(true);
+    const closeWarningModal = () => setIsWarningOpen(false);
 
     const createdAtDate = formatDate(createdAt);
     const updatedAtDate = updatedAt ? formatDate(updatedAt): null;
@@ -381,7 +388,19 @@ export function CardDevis({ data, onEditData, refreshData }) {
             </div>
             <div className={"flex flex-wrap items-center justify-center gap-16"}>
                 <Button onClick={() => onEditData(data)}>Modifier / Voir</Button>
-                <Button onClick={() => deleteData(data.id)} variant="destructive">Supprimer</Button>
+                <Button onClick={openWarningModal} variant="destructive">Supprimer</Button>
+                {isWarningOpen && (
+                    <Modal onClose={closeWarningModal}>
+                        <WarningModal
+                            onClose={closeWarningModal}
+                            onConfirm={() => {
+                                closeWarningModal();
+                                deleteData(data.id);
+                            }}
+                            type="devis"
+                        />
+                    </Modal>
+                )}
                 {successMessage && <p className="text-green-500">{successMessage}</p>}
                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </div>

@@ -6,9 +6,11 @@ import DevisForm from "@/components/forms/devis-form";
 import {deleteDevis, getOneDevis} from "@/lib/data/data-devis";
 import {redirect, useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";
+import WarningModal from "@/components/WarningModal";
 
 export default function ModalTrigger({ devisData, id }: { devisData: any, id: number }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isWarningOpen, setIsWarningOpen] = useState(false);
     const router = useRouter()
 
     const openModal = () => setIsModalOpen(true);
@@ -37,11 +39,14 @@ export default function ModalTrigger({ devisData, id }: { devisData: any, id: nu
         }
     }
 
+    const openWarningModal = () => setIsWarningOpen(true);
+    const closeWarningModal = () => setIsWarningOpen(false);
+
     return (
         <>
             <div className={"flex gap-4"}>
                 <Button onClick={openModal}>Modifier</Button>
-                <Button onClick={deleteData} variant="destructive">Supprimer</Button>
+                <Button onClick={openWarningModal} variant="destructive">Supprimer</Button>
             </div>
 
 
@@ -54,6 +59,19 @@ export default function ModalTrigger({ devisData, id }: { devisData: any, id: nu
                         }}
                         devisData={devisData}
                         isEditMode={!!devisData}
+                    />
+                </Modal>
+            )}
+
+            {isWarningOpen && (
+                <Modal onClose={closeWarningModal}>
+                    <WarningModal
+                        onClose={closeWarningModal}
+                        onConfirm={() => {
+                            closeWarningModal();
+                            deleteData();
+                        }}
+                        type="devis"
                     />
                 </Modal>
             )}

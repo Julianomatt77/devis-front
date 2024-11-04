@@ -6,6 +6,7 @@ import {addDevis, editDevis} from "@/lib/data/data-devis";
 import {getEntreprises} from "@/lib/data/data-entreprises";
 import ClientForm from "@/components/forms/client-form";
 import {transformDateTimeToDate} from "@/lib/utils";
+import {useRouter} from "next/navigation";
 
 export default function DevisForm({ onSubmit, devisData, isEditMode, refreshData }) {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -22,6 +23,7 @@ export default function DevisForm({ onSubmit, devisData, isEditMode, refreshData
         entreprise: '',
         client: '',
     });
+    const router = useRouter()
 
     const fetchEntreprises = async () => {
         const entreprises = await getEntreprises();
@@ -112,9 +114,7 @@ export default function DevisForm({ onSubmit, devisData, isEditMode, refreshData
             if (result.ok) {
                 setSuccessMessage(result.message);
                 if (!isEditMode) {
-                    refreshData();//Refresh la liste des devis
-                    // TODO: aller sur la page du devis pour ajouter des prestations
-                    // Ou afficher une modale pour ajouter des prestations
+                    router.push(`/devis/${result.data.id}`);
                 }
                 onSubmit(result.data);
             } else {
@@ -209,7 +209,7 @@ export default function DevisForm({ onSubmit, devisData, isEditMode, refreshData
             </div>
 
             <div className="flex justify-end">
-                <Button type="submit">{isEditMode ? 'Modifier' : 'Ajouter'}</Button>
+                <Button type="submit">{isEditMode ? 'Modifier' : 'Suivant'}</Button>
             </div>
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             {successMessage && <p className="text-green-500">{successMessage}</p>}

@@ -45,7 +45,6 @@ export default function Page() {
     };
 
     const closeModal = (devis) => {
-        console.log(devis)
         if (devis.id) {
             setSelectedDevis(devis);
             console.log(devis)
