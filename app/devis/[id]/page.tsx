@@ -3,6 +3,7 @@ import {formatDate, stringAdresseRue, stringAdresseVille, transformPriceToEuro} 
 import {CircleCheckBig, CircleDashed} from "lucide-react";
 import ModalTrigger from "@/components/ModalTrigger";
 import {Button} from "@/components/ui/button";
+import PrestationModalTrigger from "@/components/PrestationModalTrigger";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const id = (await params).id
@@ -157,12 +158,12 @@ export default async function Page({ params }: { params: { id: number } }) {
           </div>
         </section>
 
-        <section id={"tc-section"} className={"p-4 flex flex-col items-start justify-start w-full mb-8 "}>
+        <section id={"tc-section"} className={"p-4 flex flex-col items-start justify-start w-full mb-8"}>
           <h2 className={"underline mb-4"}>Termes et conditions</h2>
           <div className={"bg-base-100 rounded w-full min-h-32 p-4"}>{tc}</div>
         </section>
 
-        <section id={"prestations-section"} className={"flex flex-wrap justify-center gap-5 w-full border m-4"}>
+        <section id={"prestations-section"} className={"flex flex-wrap justify-center gap-5 w-full border"}>
           <div className={"grid grid-cols-8 items-end justify-items-center ml-auto border-b bg-base-100 p-4 w-full"}>
             <p>Description</p>
             <p>Quantité</p>
@@ -183,10 +184,11 @@ export default async function Page({ params }: { params: { id: number } }) {
                   <p>{prestation.tvaPercentage}</p>
                   <p>{transformPriceToEuro(prestation.tva)}</p>
                   <p className={"font-bold"}>{transformPriceToEuro(prestation.totalTTC)}</p>
-                  <p>Actions</p>
+                  <div><PrestationModalTrigger isEditPrestation={prestation} id={devis?.id} /></div>
                 </div>
             )})}
         </section>
+        <div className={"ml-4"}><PrestationModalTrigger isEditPrestation={null} id={devis?.id}/></div>
 
         <section id={"prix-section"} className={"grid grid-cols-2 gap-x-4 items-end justify-items-end ml-auto mb-8 p-4"}>
           <div className="text-right">

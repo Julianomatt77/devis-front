@@ -27,14 +27,14 @@ export async function addPrestation(formData: FormData){
             qty: formData.qty,
             element: { id: formData.element },
             devis: { id: formData.devis },
-            prixHT: formData.prixHT,
+            prixHT: formData.prixHT * 100,
             tvaPercentage: formData.tvaPercentage
         })
 
         const response = await create(body, url, token);
 
         if (!response.ok) {
-            return {ok: false, message: response};
+            return {ok: false, message: response.message};
         }
 
         return {ok: true, message: "Prestation créee avec succès !", data: response.data};
@@ -53,7 +53,7 @@ export async function editPrestation(formData: FormData){
             qty: formData.qty,
             element: { id: formData.element },
             devis: { id: formData.devis },
-            prixHT: formData.prixHT,
+            prixHT: formData.prixHT * 100,
             tvaPercentage: formData.tvaPercentage
         })
 
