@@ -144,13 +144,12 @@ export default function PrestationForm({ onSubmit, prestationData, isEditMode, d
                 />
             </div>
             <div>
-                <label>Pourcentage de la TVA: <span className={"text-red-700"}>*</span></label>
+                <label>Pourcentage de TVA:</label>
                 <input
                     type="number"
                     name="tvaPercentage"
                     value={formData.tvaPercentage || ''}
                     onChange={handleChange}
-                    required
                     className="input input-bordered w-full"
                 />
             </div>

@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: { id: number } }) {
     entreprise = devis.entreprise;
     client = devis.client;
     prestations = devis.prestations;
-    // console.log(prestations)
+
     paidAt = devis.paidAt;
     dateDebutPrestation = devis.dateDebutPrestation;
     dateValidite = devis.dateValidite;
@@ -120,7 +120,6 @@ export default async function Page({ params }: { params: { id: number } }) {
               </div>
             </div>
           </div>
-
         </section>
 
         <section id={"devis-details"} className={"flex flex-wrap items-start justify-between w-full mb-8 p-4 gap-4"}>
@@ -163,8 +162,8 @@ export default async function Page({ params }: { params: { id: number } }) {
           <div className={"bg-base-100 rounded w-full min-h-32 p-4"}>{tc}</div>
         </section>
 
-        <section id={"prestations-section"} className={"flex flex-wrap justify-center gap-5 w-full border"}>
-          <div className={"grid grid-cols-8 items-end justify-items-center ml-auto border-b bg-base-100 p-4 w-full"}>
+        <section id="prestations-section" className="w-full border flex flex-col lg:flex-wrap lg:flex-row lg:justify-center lg:gap-5">
+          <div className="hidden lg:grid lg:grid-cols-8 lg:items-end lg:justify-items-center lg:border-b lg:bg-base-100 lg:p-4 lg:w-full">
             <p>Description</p>
             <p>Quantité</p>
             <p>Prix unitaire HT</p>
@@ -176,19 +175,29 @@ export default async function Page({ params }: { params: { id: number } }) {
           </div>
           {prestations.map(prestation =>{
             return (
-                <div className={"grid grid-cols-8 gap-x-2 items-center justify-items-center p-4 w-full"} key={prestation.id}>
-                  <p>{prestation.element.nom}</p>
-                  <p>{prestation.qty}</p>
-                  <p>{transformPriceToEuro(prestation.prixHT)}</p>
-                  <p>{transformPriceToEuro(prestation.totalHT)}</p>
-                  <p>{prestation.tvaPercentage}</p>
-                  <p>{transformPriceToEuro(prestation.tva)}</p>
-                  <p className={"font-bold"}>{transformPriceToEuro(prestation.totalTTC)}</p>
-                  <div><PrestationModalTrigger isEditPrestation={prestation} id={devis?.id} /></div>
+              <div key={prestation.id} className={`w-full p-4 ${
+                      "lg:grid lg:grid-cols-8 lg:gap-x-2 lg:items-center lg:justify-items-center lg:border-none"
+                  } ${
+                      "border flex flex-col gap-y-2" // Affichage en card sur les petits écrans
+                  }`}
+              >
+                <p className="font-bold lg:font-normal">{prestation.element.nom}</p>
+                <PrestationCard nom={"Quantité:"} valeur={prestation.qty} />
+                <PrestationCard nom={"Prix Unitaire HT:"} valeur={transformPriceToEuro(prestation.prixHT)} />
+                <PrestationCard nom="Total HT" valeur={transformPriceToEuro(prestation.totalHT)} />
+                <PrestationCard nom="Pourcentage de TVA:" valeur={prestation.tvaPercentage + "%"} />
+                <PrestationCard nom="TVA: " valeur={transformPriceToEuro(prestation.tva)} />
+                <PrestationCard nom="Total TTC:" valeur={transformPriceToEuro(prestation.totalTTC)} classname="font-bold" />
+
+                <div className={`lg:hidden flex items-center gap-x-4 justify-center`}>
+                  <PrestationModalTrigger isEditPrestation={prestation} id={devis?.id} />
                 </div>
-            )})}
+              <div className={"hidden lg:block"}><PrestationModalTrigger isEditPrestation={prestation} id={devis?.id} /></div>
+            </div>
+            )
+          })}
         </section>
-        <div className={"ml-4"}><PrestationModalTrigger isEditPrestation={null} id={devis?.id}/></div>
+        <div className={"ml-4 mt-4"}><PrestationModalTrigger isEditPrestation={null} id={devis?.id}/></div>
 
         <section id={"prix-section"} className={"grid grid-cols-2 gap-x-4 items-end justify-items-end ml-auto mb-8 p-4"}>
           <div className="text-right">
@@ -221,6 +230,17 @@ export default async function Page({ params }: { params: { id: number } }) {
 
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
       </main>
+  )
+}
 
+function PrestationCard({ nom, valeur, classname }) {
+  return (
+      <>
+      <div className={`lg:hidden flex items-center gap-x-4 justify-center`}>
+        <p >{nom}</p>
+        <p className={classname}>{valeur}</p>
+      </div>
+      <p className={"hidden lg:block"}>{valeur}</p>
+      </>
   )
 }
