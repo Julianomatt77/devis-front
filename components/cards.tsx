@@ -17,23 +17,33 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
         if (type === "dashboardClient") {
             return (
                 <div id={"card-wrapper"} className={"flex flex-wrap justify-center gap-5"}>
-                    <div className="flow-root">
+                    {/*<div className="flow-root">*/}
                         <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                             {data.map((item: any) => {
                                 return <DashboardCardClient data={item} key={item.id} />
                             })}
                         </ul>
-                    </div>
+                    {/*</div>*/}
+                </div>
+            )
+        }
+
+        if (type === "dashboardDevis") {
+            return (
+                <div id={"card-dashboardDevis-wrapper"} className={"flex flex-wrap justify-center gap-5"}>
+                    <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700 w-full">
+                        {data.map((item: any) => {
+                            return <DashboardCardDevis data={item} key={item.id} />
+                        })}
+                    </ul>
                 </div>
             )
         }
     }
 
     if (type === "devis") {
-
         return (
             <div id={"card-devis-wrapper"} className={"flex flex-wrap justify-center gap-5 w-full"}>
-                {/*<div className="flow-root w-full">*/}
                     <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-200 w-full">
                         {data.map((item: any) => {
                             return <CardDevis
@@ -44,7 +54,6 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
                             />
                         })}
                     </ul>
-                {/*</div>*/}
             </div>
         )
     }
@@ -155,8 +164,6 @@ export function DashboardCardClient(props: {data: any}) {
     const {data} = props;
     const {devis, email, id, nom, prenom} = data;
 
-    // console.log(devis)
-
     return (
         <li className="py-3 sm:py-4">
             <div className="flex flex-wrap items-center justify-between gap-4">
@@ -170,9 +177,51 @@ export function DashboardCardClient(props: {data: any}) {
                         {email}
                     </p>
                 </div>
-                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    xx€
+            </div>
+        </li>
+    )
+}
+
+export function DashboardCardDevis(props: {data: any}) {
+    const {data} = props;
+    const {client, totalTTC, reference, paidAt, createdAt, updatedAt} = data;
+
+    const devisDate = updatedAt ? formatDate(updatedAt): formatDate(createdAt);
+    const paid = paidAt ? "checked" : ""
+    const totalTTCCalcule = transformPriceToEuro(totalTTC);
+
+    return (
+        <li className="py-3 sm:py-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex flex-0 min-w-0 ms-4 gap-4">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {reference}
+                    </p>
                 </div>
+                <div className="flex sm:flex-col flex-1 min-w-0 gap-4">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {client.nom} {client.prenom}
+                    </p>
+                </div>
+                <div className="flex sm:flex-col flex-2 min-w-0 gap-4">
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {devisDate}
+                    </p>
+                </div>
+                <div className="flex flex-3 min-w-0 gap-4">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
+                        {totalTTCCalcule}
+                    </p>
+                </div>
+                <div className="flex flex-4 min-w-0 ms-4 gap-4">
+                    <div className="form-control">
+                        <label className="label">
+                            {!paid && <CircleDashed className=""/>}
+                            {paid && <CircleCheckBig className="text-green-500"/>}
+                        </label>
+                    </div>
+                </div>
+
             </div>
         </li>
     )

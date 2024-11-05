@@ -30,7 +30,7 @@ export default function PrestationModalTrigger({ isEditPrestation, id }: { isEdi
     };
 
     const deleteData = async () => {
-        const result = await deletePrestation(id);
+        const result = await deletePrestation(isEditPrestation.id);
         if (result.ok) {
             const timestamp = new Date().getTime();
             router.push(`?updated=${timestamp}`);

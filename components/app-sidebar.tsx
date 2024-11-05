@@ -58,11 +58,6 @@ const itemsDynamics = [
         icon: ShoppingBasket,
     },
     {
-        title: "Prestations",
-        url: "/prestations",
-        icon: Scroll,
-    },
-    {
         title: "Utilisateur/Dashboard",
         url: "/dashboard",
         icon: UserCog,
