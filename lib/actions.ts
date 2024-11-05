@@ -186,3 +186,33 @@ export async function recuperer(url: string, token: string) {
         return {ok: false, message: `Erreur lors de la requête GET: ${error.error}`};
     }
 }
+
+export async function sendMail(formData: FormData) {
+    const url = process.env.API_URL + 'contact';
+    const body = JSON.stringify({
+        from: formData.from,
+        subject: formData.subject,
+        message: formData.message
+    })
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: body,
+        });
+
+        if (response.status !== 200) {
+            const res = await response.text();
+            const parsedRes = JSON.parse(res);
+            return {ok: false, message: parsedRes.error};
+        }
+
+        const data = await response.json();
+        return {ok: true, message: data.message};
+    } catch (error) {
+        return {ok: false, message: `Erreur lors de la requête: ${error.error}`};
+    }
+}
