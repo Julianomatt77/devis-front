@@ -75,11 +75,6 @@ const itemsFixed = [
         url: "/contact",
         icon: FilePenLine,
     },
-    // {
-    //     title: "Connexion",
-    //     url: "/login",
-    //     icon: CircleUserRound,
-    // },
 ]
 
 export function AppSidebar() {

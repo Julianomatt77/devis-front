@@ -1,6 +1,7 @@
 'use server';
 
 import {getUserInfo, signIn} from "@/lib/auth/auth";
+import {cookies} from "next/headers";
 
 export async function authenticate(
     prevState: string | undefined,
@@ -63,6 +64,28 @@ export async function register(
     } catch (error) {
         return {ok: false, message: `Erreur lors de l'authentification: ${error.error}`};
     }
+}
+
+export async function deleteAccount() {
+    const url = process.env.API_URL + 'user-delete';
+    const cookieStore = await cookies()
+    const token = cookieStore.get('devis_token').value;
+
+    const response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (response.status !== 201) {
+        const res = await response.text();
+        const parsedRes = JSON.parse(res);
+        return {status: false, message: parsedRes.message};
+    }
+
+    return await response.json();
 }
 
 export async function create(body: any, url: string, token: string) {
