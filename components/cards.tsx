@@ -10,6 +10,7 @@ import {formatDate, stringAdresse, transformPriceToEuro} from "@/lib/utils";
 import {CircleCheckBig, CircleDashed} from "lucide-react";
 import Modal from "@/components/ui/modal";
 import WarningModal from "@/components/WarningModal";
+import {redirect} from "next/navigation";
 
 export default function CardWrapper({ data, onEditData, type, isDashboard, refreshData }) {
 
@@ -149,7 +150,7 @@ export function CardClient({ data, onEditData, refreshData }) {
                 <p className="card-subtitle">{telephone}</p>
                 <p className="card-subtitle">{email}</p>
                 <div className="card-actions justify-end">
-                    {/*<Button>Voir</Button>*/}
+                    <Button onClick={() => {redirect(`/devis?client=${data.id}`)}} variant={"secondary"}>Devis</Button>
                     <Button onClick={() => onEditData(data)}>Modifier</Button>
                     <Button onClick={() => deleteClient(data.id)} variant="destructive">Supprimer</Button>
                 </div>

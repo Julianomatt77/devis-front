@@ -6,17 +6,17 @@ import {Button} from "@/components/ui/button";
 import CardWrapper from "@/components/cards";
 import Modal from "@/components/ui/modal";
 import DevisForm from "@/components/forms/devis-form";
-import {redirect, useRouter, useSearchParams} from "next/navigation";
-import {CircleX} from "lucide-react";
+import {redirect, useSearchParams} from "next/navigation";
+import SearchBar from "@/components/SearchBar";
 
 export default function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDevis, setSelectedDevis] = useState(null);
     const [data, setData] = useState([]);
 
-    const router = useRouter();
     const searchParams = useSearchParams()
     const search = searchParams.get('search')?.toLowerCase()
+    const clientId = searchParams.get('client')
 
     useEffect(() => {
         async function fetchData() {
@@ -26,7 +26,7 @@ export default function Page() {
                 // On filtre les devis supprimés
                 const activeDevis = fetchedDevis.filter((devis) => !devis.deletedAt)
                 //Fonction de recherche
-                const filteredDevis = search ? searchFilter(activeDevis, search) : activeDevis
+                const filteredDevis = search || clientId ? searchFilter(activeDevis, search, clientId) : activeDevis
 
                 setData(filteredDevis);
             }
@@ -40,7 +40,7 @@ export default function Page() {
             const updatedDevis = result.data;
             const activeDevis = updatedDevis.filter((devis) => !devis.deletedAt)
 
-            const filteredDevis = search ? searchFilter(activeDevis, search) : activeDevis
+            const filteredDevis = search || clientId ? searchFilter(activeDevis, search, clientId) : activeDevis
 
             setData(filteredDevis);
         }
@@ -74,27 +74,7 @@ export default function Page() {
                 </div>
             </div>
 
-            {/* Barre de recherche */}
-            <div className="mb-4 relative">
-                <input
-                    type="text"
-                    placeholder="Rechercher par référence de devis, nom ou prénom du client"
-                    className="p-2 border border-gray-300 rounded w-full"
-                    value={search || ''}
-                    onChange={(e) => {
-                        router.push('?search=' + e.target.value.toLowerCase());
-                    }}
-                />
-                {search && (
-                    <CircleX
-                        className="absolute right-2 top-2 cursor-pointer text-gray-400 hover:text-gray-600"
-                        onClick={() => {
-                            // Réinitialiser le champ de recherche
-                            router.push('?');
-                        }}
-                    />
-                )}
-            </div>
+            <SearchBar search={search} placeholder={"Rechercher par référence de devis ou par nom, prénom, ou email du client"} />
 
             {data.length === 0 && (<div id={"card-wrapper"} className={"flex flex-wrap justify-center gap-5"}>
                 <p>Aucun devis à afficher</p>
@@ -122,11 +102,18 @@ export default function Page() {
     )
 }
 
-function searchFilter(devisList, search){
+function searchFilter(devisList, search, clientId){
+    if (clientId) {
+        return devisList.filter((devis) => {
+            return devis.client.id == clientId;
+        });
+    }
+
     return devisList.filter((devis) => {
         const referenceMatch = devis.reference.toLowerCase().includes(search);
         const nomMatch = devis.client.nom.toLowerCase().includes(search);
         const prenomMatch = devis.client.prenom.toLowerCase().includes(search);
-        return referenceMatch || nomMatch || prenomMatch;
+        const emailMatch = devis.client.email.toLowerCase().includes(search);
+        return referenceMatch || nomMatch || prenomMatch || emailMatch;
     });
 }
