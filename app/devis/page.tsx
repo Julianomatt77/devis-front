@@ -32,7 +32,7 @@ export default function Page() {
             }
         }
         fetchData();
-    }, [search]);
+    }, [search, clientId]);
 
     const refreshData = async () => {
         const result = await getDevis();

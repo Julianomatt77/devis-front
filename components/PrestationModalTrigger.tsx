@@ -9,7 +9,7 @@ import {deletePrestation} from "@/lib/data/data-prestations";
 import WarningModal from "@/components/WarningModal";
 import {PenLine, Trash2} from "lucide-react";
 
-export default function PrestationModalTrigger({ isEditPrestation, id }: { isEditPrestation: any, id: number }) {
+export default function PrestationModalTrigger({ isEditPrestation, id }: { isEditPrestation, id: number }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isWarningOpen, setIsWarningOpen] = useState(false);
     const [selectedPrestation, setSelectedPrestation] = useState(null);
@@ -77,7 +77,7 @@ export default function PrestationModalTrigger({ isEditPrestation, id }: { isEdi
     );
 }
 
-export function NewPrestationModalTrigger({ openModal }: { openModal: (prestation: any) => void }) {
+export function NewPrestationModalTrigger({ openModal }: { openModal: (prestation) => void }) {
     return (
         <div className={"flex gap-4"}>
             <Button onClick={() => openModal(null)}>Ajouter une prestation</Button>
@@ -85,7 +85,7 @@ export function NewPrestationModalTrigger({ openModal }: { openModal: (prestatio
     );
 }
 
-export function EditPrestationModalTrigger({ openModal, openWarningModal, prestationData }: { openModal: (prestation: any) => void, openWarningModal: () => void }) {
+export function EditPrestationModalTrigger({ openModal, openWarningModal, prestationData }: { openModal: (prestation) => void, openWarningModal: () => void }) {
     return (
         <div className={"flex flex-wrap gap-6"}>
             <PenLine onClick={() => openModal(prestationData)} className={"cursor-pointer"}/>

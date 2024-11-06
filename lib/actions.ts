@@ -88,7 +88,7 @@ export async function deleteAccount() {
     return await response.json();
 }
 
-export async function create(body: any, url: string, token: string) {
+export async function create(body, url: string, token: string) {
     try {
         const response = await fetch(url, {
             method: "POST",
@@ -112,7 +112,7 @@ export async function create(body: any, url: string, token: string) {
     }
 }
 
-export async function update(body: any, url: string, token: string) {
+export async function update(body, url: string, token: string) {
     try {
         const response = await fetch(url, {
             method: "PATCH",

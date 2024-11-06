@@ -6,7 +6,7 @@ import {
     FilePenLine,
     Home,
     ReceiptEuro,
-    Scale, Scroll, ShoppingBasket, UserCog,
+    Scale, ShoppingBasket, UserCog,
     UsersRound
 } from "lucide-react"
 
@@ -33,15 +33,23 @@ const itemsDynamics = [
         icon: Home,
     },
     {
+        title: "Clients",
+        url: "/clients",
+        icon: UsersRound,
+    },
+    {
         title: "Devis",
         url: "/devis",
         icon: ReceiptEuro,
     },
     {
-        title: "Clients",
-        url: "/clients",
-        icon: UsersRound,
+        title: "Utilisateur/Dashboard",
+        url: "/dashboard",
+        icon: UserCog,
     },
+]
+
+const intermediateItems = [
     {
         title: "Entreprises",
         url: "/entreprises",
@@ -57,12 +65,7 @@ const itemsDynamics = [
         url: "/produits",
         icon: ShoppingBasket,
     },
-    {
-        title: "Utilisateur/Dashboard",
-        url: "/dashboard",
-        icon: UserCog,
-    },
-]
+    ]
 
 const itemsFixed = [
     {
@@ -125,6 +128,23 @@ export function AppSidebar() {
                 <SidebarGroup className={"mb-8"}>
                     <SidebarGroupContent>
                         <SidebarMenu>
+                            {intermediateItems.map((item) => (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild className={"my-2"}>
+                                        <a href={item.url}>
+                                            <item.icon />
+                                            <span>{item.title}</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup className={"mb-8"}>
+                    <SidebarGroupContent>
+                        <SidebarMenu className={"mb-8"}>
                             {itemsFixed.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild className={"my-2"}>

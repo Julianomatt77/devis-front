@@ -20,7 +20,7 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
                 <div id={"card-wrapper"} className={"flex flex-wrap justify-center gap-5"}>
                     {/*<div className="flow-root">*/}
                         <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-                            {data.map((item: any) => {
+                            {data.map((item) => {
                                 return <DashboardCardClient data={item} key={item.id} />
                             })}
                         </ul>
@@ -33,7 +33,7 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
             return (
                 <div id={"card-dashboardDevis-wrapper"} className={"flex flex-wrap justify-center gap-5"}>
                     <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700 w-full">
-                        {data.map((item: any) => {
+                        {data.map((item) => {
                             return <DashboardCardDevis data={item} key={item.id} />
                         })}
                     </ul>
@@ -46,7 +46,7 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
         return (
             <div id={"card-devis-wrapper"} className={"flex flex-wrap justify-center gap-5 w-full"}>
                     <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-200 w-full">
-                        {data.map((item: any) => {
+                        {data.map((item) => {
                             return <CardDevis
                                 data={item}
                                 key={item.id}
@@ -61,7 +61,7 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
 
     return (
         <div id={"card-wrapper"} className={"flex flex-wrap justify-center gap-5"}>
-            {data.map((item: any) => {
+            {data.map((item) => {
                 if (type === "client") {
                     return <CardClient
                         data={item}
@@ -114,7 +114,7 @@ export default function CardWrapper({ data, onEditData, type, isDashboard, refre
 }
 
 export function CardClient({ data, onEditData, refreshData }) {
-    const {adresse, devis, email, id, nom, prenom, telephone} = data;
+    const {adresse, email, nom, prenom, telephone} = data;
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     let displayAdresse = '';
@@ -161,9 +161,9 @@ export function CardClient({ data, onEditData, refreshData }) {
     )
 }
 
-export function DashboardCardClient(props: {data: any}) {
+export function DashboardCardClient(props: {data}) {
     const {data} = props;
-    const {devis, email, id, nom, prenom} = data;
+    const {email, nom, prenom} = data;
 
     return (
         <li className="py-3 sm:py-4">
@@ -183,7 +183,7 @@ export function DashboardCardClient(props: {data: any}) {
     )
 }
 
-export function DashboardCardDevis(props: {data: any}) {
+export function DashboardCardDevis(props: {data}) {
     const {data} = props;
     const {client, totalTTC, reference, paidAt, createdAt, updatedAt} = data;
 
@@ -229,7 +229,6 @@ export function DashboardCardDevis(props: {data: any}) {
 }
 
 export function CardAdresse({ data, onEditData, refreshData }) {
-    const {numero, rue, complementaire, cp, ville, pays} = data;
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -312,7 +311,7 @@ export function CardProduct({ data, onEditData, refreshData }) {
 }
 
 export function CardEntreprise({ data, onEditData, refreshData }) {
-    const {adresse, codeApe, contact, devis, email, id, nom, siret, telephone1, telephone2, tvaIntracom, web} = data;
+    const {adresse, codeApe, contact, email,  nom, siret, telephone1, telephone2, tvaIntracom, web} = data;
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     let displayAdresse = '';
