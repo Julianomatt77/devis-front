@@ -31,8 +31,8 @@ export default function Page() {
         }
     };
 
-    const openEditModal = (product) => {
-        setSelectedProduct(product);
+    const openEditModal = (product: never | null) => {
+        setSelectedProduct(product ?? null);
         setIsModalOpen(true);
     };
 

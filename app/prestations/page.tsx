@@ -31,8 +31,8 @@ export default function Page() {
         }
     };
 
-    const openEditModal = (prestation) => {
-        setSelectedPrestation(prestation);
+    const openEditModal = (prestation: never | null) => {
+        setSelectedPrestation(prestation ?? null);
         setIsModalOpen(true);
     };
 

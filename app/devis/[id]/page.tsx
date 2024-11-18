@@ -1,13 +1,13 @@
-import {getOneDevis} from "@/lib/data/data-devis";
+import {getDevis, getOneDevis} from "@/lib/data/data-devis";
 import {formatDate, stringAdresseRue, stringAdresseVille, transformPriceToEuro} from "@/lib/utils";
 import {CircleCheckBig, CircleDashed} from "lucide-react";
 import ModalTrigger from "@/components/ModalTrigger";
 import {Button} from "@/components/ui/button";
 import PrestationModalTrigger from "@/components/PrestationModalTrigger";
-import PDFExportButton from "@/components/PDFExportButton";
+// import PDFExportButton from "@/components/PDFExportButton";
 
-export default async function Page({ params }: { params: { id: number } }) {
-  const id = (await params).id
+export default async function Page({ params }: { params: Promise<{ id: number }> }) {
+  const id = await (params).id
 
   //TODO: créer un modèle
   let devis = {}

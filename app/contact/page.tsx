@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from "react";
+import {ChangeEvent, FormEventHandler, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {sendMail} from "@/lib/actions";
 
@@ -28,7 +28,7 @@ function ContactForm() {
     const [formData, setFormData] = useState(initialFormData);
 
     // Gestion des changements dans les inputs
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
         setFormData((prevData) => ({
             ...prevData,

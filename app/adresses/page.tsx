@@ -30,8 +30,8 @@ export default function Page() {
         }
     };
 
-    const openEditModal = (adresse) => {
-        setSelectedAdresse(adresse);
+    const openEditModal = (adresse: never | null ) => {
+        setSelectedAdresse(adresse ?? null);
         setIsModalOpen(true);
     };
 

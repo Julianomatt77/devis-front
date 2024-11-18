@@ -6,6 +6,7 @@ import CardWrapper from "@/components/cards";
 import Modal from "@/components/ui/modal";
 import {getEntreprises} from "@/lib/data/data-entreprises";
 import EntrepriseForm from "@/components/forms/entreprise-form";
+import {generateKeyPair} from "crypto";
 
 export default function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,8 +32,8 @@ export default function Page() {
         }
     };
 
-    const openEditModal = (entreprise) => {
-        setSelectedEntreprise(entreprise);
+    const openEditModal = (entreprise: never | null) => {
+        setSelectedEntreprise(entreprise ?? null);
         setIsModalOpen(true);
     };
 

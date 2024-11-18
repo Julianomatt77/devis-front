@@ -51,7 +51,7 @@ const PDFExportButton = ({ devis, prixHtCalcule, tvaCalcule, totalTTCCalcule, en
     );
 };
 
-export default PDFExportButton;
+// export default PDFExportButton;
 
 //
 // export default function PDFExportButton({

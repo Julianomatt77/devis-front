@@ -6,17 +6,16 @@ import {Button} from "@/components/ui/button";
 import CardWrapper from "@/components/cards";
 import Modal from "@/components/ui/modal";
 import DevisForm from "@/components/forms/devis-form";
-import {redirect, useSearchParams} from "next/navigation";
+import {redirect} from "next/navigation";
 import SearchBar from "@/components/SearchBar";
+import { Suspense } from 'react';
 
 export default function Page() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDevis, setSelectedDevis] = useState(null);
     const [data, setData] = useState([]);
-
-    const searchParams = useSearchParams()
-    const search = searchParams.get('search')?.toLowerCase()
-    const clientId = searchParams.get('client')
+    const [search, setSearch] = useState('');
+    const [clientId, setClientId] = useState('');
 
     useEffect(() => {
         async function fetchData() {
@@ -46,6 +45,16 @@ export default function Page() {
         }
     };
 
+    const refreshSearch = (e) =>{
+        setSearch(e);
+        refreshData();
+    }
+
+    const refreshClient = (clientId) =>{
+        setClientId(clientId);
+        refreshData();
+    }
+
     const openEditModal = (devis) => {
         if (devis && devis.id) {
         setSelectedDevis(devis);
@@ -64,6 +73,7 @@ export default function Page() {
     };
 
     return (
+        <Suspense fallback={<div>Chargement...</div>}>
         <main className="w-full p-4 shadow sm:p-8">
             <div className="relative flex w-full flex-col items-center space-y-2.5 p-4">
                 <div className={"mb-8"}>
@@ -74,7 +84,13 @@ export default function Page() {
                 </div>
             </div>
 
-            <SearchBar search={search} placeholder={"Rechercher par référence de devis ou par nom, prénom, ou email du client"} />
+             <SearchBar
+                 search={search}
+                 placeholder={"Rechercher par référence de devis ou par nom, prénom, ou email du client"}
+                 clientId={clientId}
+                 refreshSearch={refreshSearch}
+                 refreshClient={refreshClient}
+             />
 
             {data.length === 0 && (<div id={"card-wrapper"} className={"flex flex-wrap justify-center gap-5"}>
                 <p>Aucun devis à afficher</p>
@@ -99,6 +115,8 @@ export default function Page() {
                 </Modal>
             )}
         </main>
+        </Suspense>
+
     )
 }
 
@@ -117,3 +135,30 @@ function searchFilter(devisList, search, clientId){
         return referenceMatch || nomMatch || prenomMatch || emailMatch;
     });
 }
+
+// function Search() {
+//     const searchParams = useSearchParams()
+//     const router = useRouter();
+//
+//     return (
+//             <div className="mb-4 relative">
+//                 <input
+//                     type="text"
+//                     placeholder={placeholder}
+//                     className="p-2 border border-gray-300 rounded w-full"
+//                     value={search || ''}
+//                     onChange={(e) => {
+//                         router.push('?search=' + e.target.value.toLowerCase());
+//                     }}
+//                 />
+//                 {search && (
+//                     <CircleX
+//                         className="absolute right-2 top-2 cursor-pointer text-gray-400 hover:text-gray-600"
+//                         onClick={() => {
+//                             router.push('?');
+//                         }}
+//                     />
+//                 )}
+//             </div>
+//     );
+// }
