@@ -4,6 +4,7 @@ import {CircleCheckBig, CircleDashed} from "lucide-react";
 import ModalTrigger from "@/components/ModalTrigger";
 import {Button} from "@/components/ui/button";
 import PrestationModalTrigger from "@/components/PrestationModalTrigger";
+import PDFExportButton from "@/components/PDFExportButton";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const id = (await params).id
@@ -36,6 +37,8 @@ export default async function Page({ params }: { params: { id: number } }) {
   let updatedAt = '';
   let contactClient = '';
   let paid = '';
+
+  // await getServerSideProps()
 
   const result = await getOneDevis(id)
   if (result.ok) {
@@ -90,11 +93,22 @@ export default async function Page({ params }: { params: { id: number } }) {
   }
 
   return (
-      <main className="flex flex-col items-between justify-start p-4 w-full">
+      <main id={"devis-" + id} className="flex flex-col items-between justify-start p-4 w-full">
         <section id={"devis-actions-section"} className={"flex items-center justify-between gap-4 p-4"}>
           <a href={"/devis"}><Button>Retour aux devis</Button></a>
           <ModalTrigger devisData={devis} id={devis?.id} />
         </section>
+        {/*{devis && prixHtCalcule && tvaCalcule && totalTTCCalcule && <PDFExportButton*/}
+        {/*    devis={devis}*/}
+        {/*    prixHtCalcule={prixHtCalcule}*/}
+        {/*    tvaCalcule={tvaCalcule}*/}
+        {/*    totalTTCCalcule={totalTTCCalcule}*/}
+        {/*    entrepriseAdresseRue={entrepriseAdresseRue}*/}
+        {/*    entrepriseAdresseVille={entrepriseAdresseVille}*/}
+        {/*    clientAdresseRue={clientAdresseRue}*/}
+        {/*    clientAdresseVille={clientAdresseVille}*/}
+        {/*    id={devis?.id}*/}
+        {/*/>}*/}
 
         <section id={"top section"} className={"flex items-start justify-between w-full mb-8 p-4"}>
           <div id={"entreprise-adresse-section"}>
